@@ -1,0 +1,22 @@
+# Android
+*.apk
+.gradle/
+build/
+local.properties
+.idea/
+
+# Python (MVT / server)
+__pycache__/
+venv/
+.env
+
+# iOS backups - never commit real device data
+backups/
+*.backup
+
+# Keys and certificates
+*.pem
+*.key
+
+# OS files
+.DS_Store
