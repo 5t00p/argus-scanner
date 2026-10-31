@@ -1,57 +1,26 @@
-drop database if exists JohnsUsedCars;
-create database JohnsUsedCars;
-use JohnsUsedCars;
+Drop DataBase ArgusScanner;
+Create DataBase ArgusScanner;
+Use ArgusScanner;
 
-create table Customer(
-cID int primary key,
-cName varchar(50),
-cPhone int,
-cEmail varchar(250)
+create table Signatures(
+id int,
+cert_hash varchar(20) primary key,
+package_name varchar(20),
+type varchar(10),
+app_family varchar(20),
+foreign key (id) references Scan(id)
 );
 
-create table Car(
-Vin int primary key,
-Make varchar(50),
-Model varchar(50),
-Year int,
-MSRP int,
-cID int,
-foreign key (cID) references Customer(cID)
+create table Scan(
+id int,
+scan_status varchar(20),
+started_at varchar(20),
+foreign key (id) references Finding(id)
 );
 
-create table Inventory(
-Vin int,
-StockStatus bool,
-ParkingSpot varchar(25),
-ParkingLot varchar(25),
-foreign key (Vin) references Car(Vin)
-);
-
-create table Salesperson(
-sUsername varchar(250) primary key,
-sPassword varchar(100),
-sName varchar(50),
-sPhone int,
-sEmail varchar(250)
-);
-
-insert into Salesperson(sUsername, sPassword, sName, sPhone, sEmail) 
-values ('Mikey', 'maggie1991', 'Todd Smith', 9364389752, 'rodd1991@gmail.com');
-
-
-create table Sale(
-sID int primary key,
-sDate date,
-sPrice int,
-sUsername varchar(250),
-Vin int,
-foreign key (sUsername) references Salesperson(sUsername),
-foreign key (Vin) references Car(Vin)
-);
-
-create table Financing(
-cID int,
-InterestRate int,
-MonthlyPayment int,
-foreign key (cID) references Customer(cID)
+create table Finding(
+id int,
+reason varchar(20),
+risk_score int,
+foreign key (id) references Signatures(id)
 );
