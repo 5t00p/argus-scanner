@@ -1,4 +1,4 @@
---done by Justin
+--done by Josh
 Drop DataBase ArgusScanner;
 Create DataBase ArgusScanner;
 Use ArgusScanner;
