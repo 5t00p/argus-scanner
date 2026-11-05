@@ -1,1 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Argus - Scans</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
 
+    <h1>Argus - Device Scanning</h1>
+
+    <nav>
+        <a href="index.html">Dashboard</a>
+        <a href="cases.html">Cases</a>
+        <a href="scans.html">Scans</a>
+        <a href="findings.html">Findings</a>
+        <a href="reports.html">Reports</a>
+    </nav>
+    <main>
+       <h2>Scan Overview</h2> 
+       <p>
+        Perform device scans here.
+       </p>
+
+       <section class="scan-options">
+            <form>
+                <input type="radio" name="scanType" id="full" value="full" checked>
+                <label for="full">Full Device Scan</label>
+
+                <input type="radio" name="scanType" id="custom" value="custom">
+                <label for="custom">Custom Scan</label>
+                <div class="scan-button">
+                    <button type="submit">
+                        Start Scan
+                    </button>
+                </div>
+                
+            </form>
+       </section>
+
+       <h2>Scan Progress</h2> 
+       <p>
+        Status: Waiting for scan selection
+       </p>
+       <section class="scan-progress">
+            <form> 
+                <progress value="0" max="100"></progress>
+                <span>0%</span>
+            </form>
+       </section>
+       <!-- NOTE TO SELF - Continue with rudimentary pages, increase size of bar)-->
+    </main>
