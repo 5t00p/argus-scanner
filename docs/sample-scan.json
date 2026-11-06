@@ -1,0 +1,21 @@
+{
+  "scan_uuid": "a6f06011-4ae1-49ba-b9eb-ddc4cd6db2f9",
+  "platform": "android",
+  "model": "Google sdk_gphone64_x86_64",
+  "os_version": "14",
+  "scanned_at": "2026-11-06T19:09:46.851819Z",
+  "apps": [
+    {
+      "package_name": "com.argus_scanner",
+      "app_name": "argus-scanner",
+      "cert_hash": "E250F64A903805F2F2E081140EAF2481A9D543CA29DC96BF8D631AA95C023A6A",
+      "hidden": false,
+      "accessibility_enabled": false,
+      "device_admin": false,
+      "permissions": [
+        "android.permission.QUERY_ALL_PACKAGES",
+        "com.argus_scanner.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+      ]
+    }
+  ]
+}
