@@ -1,54 +1,56 @@
---done by Josh
+--Done by Josh
+
 Drop DataBase ArgusScanner;
 Create DataBase ArgusScanner;
 Use ArgusScanner;
 
 
 create table Scan(
-id int primary key auto_increment,
-scan_status varchar(20),
+scanID int primary key auto_increment,
+scan_status varchar(50),
 started_at DateTime,
-foreign key (id) references Finding(id)
+foreign key (deviceID) references Device(deviceID)
 );
 
 create table Finding(
-id int primary key auto_increment,
-reason varchar(20),
+findingID int primary key auto_increment,
+reason varchar(100),
 risk_score int,
-foreign key (id) references Signatures(id)
+foreign key (scanID) references Scan(scanID),
+foreign key (signaturesID) references Signatures(signaturesID)
 );
 
 create table Signatures(
-id int primary key auto_increment,
-cert_hash varchar(20) primary key,
-package_name varchar(20),
-type varchar(10),
-app_family varchar(20),
-foreign key (id) references Scan(id)
+signaturesID int primary key auto_increment,
+cert_hash varchar(100),
+package_name varchar(100),
+type varchar(100),
+app_family varchar(100)
 );
 
---done by Caleb
+--Done by Caleb
+
 create table Device(
-    id INT primary key auto_increment,
+    deviceID INT primary key auto_increment,
     platform varchar(100),
     model varchar(100)
 );
 
 create table Auditlog(
-    id int primary key auto_increment,
+    auditID int primary key auto_increment,
     action varchar(255),
-    'timestamp' DATETIME
+    `timestamp` DATETIME
 );
 
-create table Case(
-    id int primary key auto_increment,
+create table `Case`(
+    caseID int primary key auto_increment,
     survivor_ref varchar(100),
-    opened_at DateTime
+    opened_at DateTime,
     status varchar(50)
 );
 
 create table User(
-    id int primary key auto_increment,
+    userID int primary key auto_increment,
     name varchar(100),
     email varchar(100),
     role varchar(50)
