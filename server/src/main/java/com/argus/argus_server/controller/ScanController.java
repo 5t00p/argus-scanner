@@ -1,8 +1,7 @@
 package com.argus.argus_server.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.argus.argus_server.model.Scan;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -11,11 +10,19 @@ import java.util.List;
 public class ScanController {
 
     @GetMapping
-    public List<String> getScans() {
+    public List<Scan> getScans() {
+
         return List.of(
-                "com.example.app",
-                "com.spyapp.test",
-                "com.socialmedia.app"
+                new Scan(
+                        1L,
+                        "PHONE001",
+                        "2026-11-09"
+                ),
+                new Scan(
+                        2L,
+                        "PHONE002",
+                        "2026-11-09"
+                )
         );
     }
 }
