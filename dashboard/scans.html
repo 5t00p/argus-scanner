@@ -18,18 +18,18 @@
     <main>
        <h2>Scan Overview</h2> 
        <p>
-        Perform device scans here.
+        Select scan type:
        </p>
 
        <section class="scan-options">
-            <form>
+            <form id="scanForm">
                 <input type="radio" name="scanType" id="full" value="full" checked>
                 <label for="full">Full Device Scan</label>
 
                 <input type="radio" name="scanType" id="custom" value="custom">
                 <label for="custom">Custom Scan</label>
                 <div class="scan-button">
-                    <button type="submit">
+                    <button type="submit" id="startScan">
                         Start Scan
                     </button>
                 </div>
@@ -37,15 +37,79 @@
             </form>
        </section>
 
-       <h2>Scan Progress</h2> 
-       <p>
-        Status: Waiting for scan selection
-       </p>
+       <!-- <h2>Scan Progress</h2> -->
+        <p class="scan-status-line">
+           <strong> Status:<span id="scanStatus">Waiting for scan</span></strong>
+        </p>
+
+        <p class="scan-status-line">
+            Applications Scanned: <span id="scannedCount">0</span>
+        </p>
        <section class="scan-progress">
-            <form> 
-                <progress value="0" max="100"></progress>
-                <span>0%</span>
-            </form>
+                <progress id="scanProgress" value="0" max="100"></progress>
+                <span id="scanPercentage">0%</span>
        </section>
-       <!-- NOTE TO SELF - Continue with rudimentary pages, increase size of bar)-->
-    </main>
+
+       
+    <section class="scan-status">
+        <!--<h2>Current Scan Information</h2>-->
+        <p class="scan-status-line">
+            <button type="button" id="cancelScan" disabled>
+                Cancel Scan
+            </button>
+        </p>
+    </section>
+
+
+    <section class="scan-history">
+        <h2>Previous Scans</h2>
+
+        <table id="scanHistoryTable">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Scan Type</th>
+                    <th>Applications Scanned</th>
+                    <th>Threats Detected</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody id="scanHistoryBody">
+                <tr>
+                    <td colspan="5">No previous scans available.</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+
+    <!-- Latest Scan Results Section -->
+    <section class="scan-results">
+        <h2>Latest Scan Results</h2>
+
+        <div class="scan-summary">
+
+            <div class="stat-card">
+                <h3>Applications Scanned</h3>
+                <p id="resultAppsScanned">0</p>
+            </div>
+
+            <div class="stat-card">
+                <h3>Threats Detected</h3>
+                <p id="resultThreats">0</p>
+            </div>
+
+            <div class="stat-card">
+                <h3>High Risk Findings</h3>
+                <p id="resultHighRisk">0</p>
+            </div>
+
+        </div>
+
+        <a href="findings.html" class="results-link">
+            View Detailed Findings
+        </a>
+    </section>
+
+</main>
