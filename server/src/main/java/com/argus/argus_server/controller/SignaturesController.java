@@ -1,7 +1,7 @@
 package com.argus.argus_server.controller;
 
-import com.argus.argus_server.model.Signature;
-import com.argus.argus_server.repository.SignatureRepository;
+import com.argus.argus_server.model.Signatures;
+import com.argus.argus_server.repository.SignaturesRepository;
 
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -10,29 +10,29 @@ import java.util.List;
 @RequestMapping("/api/signatures")
 public class SignaturesController {
     
-    private final SignatureRepository signatureRepository;
+    private final SignaturesRepository signatureRepository;
 
-    public SignaturesController(SignatureRepository signatureRepository) {
+    public SignaturesController(SignaturesRepository signatureRepository) {
         this.signatureRepository = signatureRepository;
     }
 
     @GetMapping
-    public List<Signature> getAllSignatures() {
+    public List<Signatures> getAllSignatures() {
         return signatureRepository.findAll();
     }
 
     @GetMapping("/{id}")
-    public Signature getSignatureById(@PathVariable Integer id) {
+    public Signatures getSignatureById(@PathVariable Integer id) {
         return signatureRepository.findById(id).orElse(null);
     }
 
     @GetMapping("/package/{packageName}")
-    public List<Signature> getByPackageName(@PathVariable String packageName) {
+    public List<Signatures> getByPackageName(@PathVariable String packageName) {
         return signatureRepository.findByPackageName(packageName);
     }
 
     @GetMapping("/hash/{certificate}")
-    public List<Signature> getByCertHash(@PathVariable String certHash) {
+    public List<Signatures> getByCertHash(@PathVariable String certHash) {
         return signatureRepository.findByCertHash(certHash);
     }
 
