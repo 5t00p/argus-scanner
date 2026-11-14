@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Argus - Scan Findings</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <h1>Argus - Scan Findings</h1>
+
+    <nav>
+        <a href="index.html">Dashboard</a>
+        <a href="scans.html">Scans</a>
+        <a href="reports.html">Reports</a>
+    </nav>
+
+    <main>
+        <h2>Scan Findings</h2>
+
+        <p>Scan ID: <span id="selectedScanId">-</span></p>
+
+        <section class="scan-history">
+            <h2>Flagged Applications</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Application Package</th>
+                        <th>Risk Score</th>
+                        <th>Reason Flagged</th>
+                    </tr>
+                </thead>
+
+                <tbody id="findingsBody">
+                    <tr>
+                        <td colspan="3">Loading findings...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <p>
+            <a href="scans.html">Back to Scan History</a>
+        </p>
+    </main>
+
+    <script src="js/api.js" defer></script>
+    <script src="js/findings.js" defer></script>
+</body>
+</html>

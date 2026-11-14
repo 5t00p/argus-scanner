@@ -1,0 +1,22 @@
+{
+  "scan_uuid": "b7e17122-5bf2-4acb-8ced-ddc4cd6db3f0",
+  "platform": "android",
+  "model": "Google sdk_gphone64_x86_64",
+  "os_version": "14",
+  "scanned_at": "2026-11-12T16:00:00Z",
+  "apps": [
+    {
+      "package_name": "com.example.fakestalker",
+      "app_name": "FakeStalker Test App",
+      "cert_hash": "",
+      "hidden": false,
+      "accessibility_enabled": true,
+      "device_admin": true,
+      "permissions": [
+        "android.permission.READ_SMS",
+        "android.permission.READ_CONTACTS",
+        "android.permission.ACCESS_FINE_LOCATION"
+      ]
+    }
+  ]
+}
