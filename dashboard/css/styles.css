@@ -7,7 +7,7 @@ body {
 }
 
 nav {
-    background-color: #17263c;
+    background-color: #41ae82;
     padding: 20px;
     display: flex;
     gap: 25px;
@@ -95,7 +95,7 @@ main {
 }
 
 .scan-history th {
-    background-color: #17263c;
+    background-color: #41ae82;
     color: white;
 }
 
@@ -104,6 +104,11 @@ main {
 }
 .scan-status-line {
     margin-bottom: 20px;
+}
+
+#scanStatus {
+    font-weight: bold;
+    color: #2563eb;
 }
 
 @media (max-width: 800px) {

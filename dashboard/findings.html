@@ -1,358 +1,50 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Argus - Security Findings</title>
+    <title>Argus - Scan Findings</title>
     <link rel="stylesheet" href="css/styles.css">
-
-    <style>
-        .findings-container {
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            margin-top: 25px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        }
-
-        .findings-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        .findings-table th,
-        .findings-table td {
-            padding: 15px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .findings-table th {
-            background-color: #17263c;
-            color: white;
-        }
-
-        .risk-high {
-            color: #c62828;
-            font-weight: bold;
-        }
-
-        .risk-medium {
-            color: #e68a00;
-            font-weight: bold;
-        }
-
-        .risk-low {
-            color: #218838;
-            font-weight: bold;
-        }
-
-        .scan-input {
-            padding: 10px;
-            width: 180px;
-            max-width: 100%;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        .search-button {
-            padding: 11px 20px;
-            background-color: #2563eb;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .search-button:hover {
-            background-color: #1746a2;
-        }
-
-        .status-message {
-            margin-top: 15px;
-        }
-
-        .table-wrapper {
-            overflow-x: auto;
-        }
-    </style>
 </head>
-
 <body>
 
-    <h1>Argus - Security Findings</h1>
+    <h1>Argus - Scan Findings</h1>
 
     <nav>
         <a href="index.html">Dashboard</a>
-        <a href="cases.html">Cases</a>
         <a href="scans.html">Scans</a>
-        <a href="findings.html">Findings</a>
         <a href="reports.html">Reports</a>
     </nav>
 
     <main>
+        <h2>Scan Findings</h2>
 
-        <h2>Security Findings Overview</h2>
+        <p>Scan ID: <span id="selectedScanId">-</span></p>
+
+        <section class="scan-history">
+            <h2>Flagged Applications</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Application Package</th>
+                        <th>Risk Score</th>
+                        <th>Reason Flagged</th>
+                    </tr>
+                </thead>
+
+                <tbody id="findingsBody">
+                    <tr>
+                        <td colspan="3">Loading findings...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
 
         <p>
-            Review suspicious applications detected
-            during device security scans.
+            <a href="scans.html">Back to Scan History</a>
         </p>
-
-        <section class="dashboard-stats">
-
-            <div class="stat-card">
-                <h3>Total Findings</h3>
-                <p id="totalFindings">0</p>
-            </div>
-
-            <div class="stat-card">
-                <h3>High Risk</h3>
-                <p id="highRisk">0</p>
-            </div>
-
-            <div class="stat-card">
-                <h3>Medium Risk</h3>
-                <p id="mediumRisk">0</p>
-            </div>
-
-            <div class="stat-card">
-                <h3>Low Risk</h3>
-                <p id="lowRisk">0</p>
-            </div>
-
-        </section>
-
-        <section class="findings-container">
-
-            <h2>Scan Findings</h2>
-
-            <p>
-                Enter a scan ID to view detected
-                suspicious applications.
-            </p>
-
-            <form id="findingsForm">
-                <label for="scanId">Scan ID:</label>
-
-                <input
-                    type="number"
-                    id="scanId"
-                    class="scan-input"
-                    placeholder="Enter Scan ID"
-                    min="1"
-                    required
-                >
-
-                <button
-                    type="submit"
-                    class="search-button">
-                    View Findings
-                </button>
-            </form>
-
-            <p id="statusMessage"
-               class="status-message"
-               role="status"
-               aria-live="polite">
-                Enter a scan ID to load findings.
-            </p>
-
-            <div class="table-wrapper">
-                <table class="findings-table">
-
-                    <thead>
-                        <tr>
-                            <th>Finding ID</th>
-                            <th>Application</th>
-                            <th>Reason Detected</th>
-                            <th>Risk Score</th>
-                            <th>Risk Level</th>
-                            <th>Scan ID</th>
-                        </tr>
-                    </thead>
-
-                    <tbody id="findingsBody">
-                        <tr>
-                            <td colspan="6">
-                                No findings loaded.
-                            </td>
-                        </tr>
-                    </tbody>
-
-                </table>
-            </div>
-
-        </section>
-
     </main>
 
-    <script>
-        // Update this if the backend uses
-        // a different host or port.
-        const API_BASE = "http://localhost:8080";
-
-        const form = document.getElementById("findingsForm");
-        const tableBody = document.getElementById("findingsBody");
-        const statusMessage = document.getElementById("statusMessage");
-
-        function updateStats(findings) {
-            let high = 0;
-            let medium = 0;
-            let low = 0;
-
-            findings.forEach(finding => {
-                const score = Number(finding.risk_score);
-
-                if (score >= 70) {
-                    high++;
-                } else if (score >= 40) {
-                    medium++;
-                } else {
-                    low++;
-                }
-            });
-
-            document.getElementById("totalFindings").textContent =
-                findings.length;
-
-            document.getElementById("highRisk").textContent = high;
-            document.getElementById("mediumRisk").textContent = medium;
-            document.getElementById("lowRisk").textContent = low;
-        }
-
-        function getRiskLevel(score) {
-            if (score >= 70) {
-                return {
-                    label: "High",
-                    className: "risk-high"
-                };
-            }
-
-            if (score >= 40) {
-                return {
-                    label: "Medium",
-                    className: "risk-medium"
-                };
-            }
-
-            return {
-                label: "Low",
-                className: "risk-low"
-            };
-        }
-
-        function addCell(row, value) {
-            const cell = document.createElement("td");
-            cell.textContent = value ?? "N/A";
-            row.appendChild(cell);
-            return cell;
-        }
-
-        function showMessage(message) {
-            tableBody.replaceChildren();
-
-            const row = document.createElement("tr");
-            const cell = document.createElement("td");
-
-            cell.colSpan = 6;
-            cell.textContent = message;
-
-            row.appendChild(cell);
-            tableBody.appendChild(row);
-        }
-
-        function displayFindings(findings, scanId) {
-            tableBody.replaceChildren();
-            updateStats(findings);
-
-            if (findings.length === 0) {
-                showMessage("No findings found for this scan.");
-                return;
-            }
-
-            findings.forEach(finding => {
-                const row = document.createElement("tr");
-
-                const score = Number(finding.risk_score);
-                const risk = getRiskLevel(score);
-
-                addCell(row, finding.findingID);
-                addCell(row, finding.package_name);
-                addCell(row, finding.reason);
-                addCell(row, finding.risk_score);
-
-                const riskCell = addCell(row, risk.label);
-                riskCell.className = risk.className;
-
-                addCell(row, scanId);
-
-                tableBody.appendChild(row);
-            });
-        }
-
-        async function loadFindings(scanId) {
-            statusMessage.textContent = "Loading findings...";
-            showMessage("Loading...");
-            updateStats([]);
-
-            try {
-                const response = await fetch(
-                    `${API_BASE}/api/scans/${scanId}/findings`
-                );
-
-                if (!response.ok) {
-                    throw new Error(
-                        `Server returned status ${response.status}`
-                    );
-                }
-
-                const findings = await response.json();
-
-                if (!Array.isArray(findings)) {
-                    throw new Error("Unexpected response format");
-                }
-
-                displayFindings(findings, scanId);
-
-                statusMessage.textContent =
-                    `Loaded ${findings.length} finding(s) for scan ${scanId}.`;
-
-            } catch (error) {
-                console.error("Findings error:", error);
-
-                showMessage("Unable to load findings.");
-
-                statusMessage.textContent =
-                    "Could not connect to the backend or retrieve findings. " +
-                    "Check the server, API address, and browser console.";
-            }
-        }
-
-        form.addEventListener("submit", function(event) {
-            event.preventDefault();
-
-            const scanId = document.getElementById("scanId").value;
-
-            if (!scanId || Number(scanId) < 1) {
-                statusMessage.textContent = "Enter a valid scan ID.";
-                return;
-            }
-
-            loadFindings(scanId);
-        });
-
-        // Allow links such as findings.html?scanId=1
-        const params = new URLSearchParams(window.location.search);
-        const initialScanId = params.get("scanId");
-
-        if (initialScanId && /^[1-9]\d*$/.test(initialScanId)) {
-            document.getElementById("scanId").value = initialScanId;
-            loadFindings(initialScanId);
-        }
-    </script>
-
+    <script src="js/api.js" defer></script>
+    <script src="js/findings.js" defer></script>
 </body>
 </html>
