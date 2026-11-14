@@ -1,6 +1,10 @@
 package com.argus.argus_server.controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+
+import com.argus.argus_server.model.CaseAssignment;
+import com.argus.argus_server.repository.CaseAssignmentRepository;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/case-assignments")

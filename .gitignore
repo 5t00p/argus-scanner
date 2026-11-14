@@ -1,22 +1,6 @@
-# Android
-*.apk
-.gradle/
-build/
-local.properties
-.idea/
+# Editor settings (launch.json has the DB password)
+.vscode/
 
-# Python (MVT / server)
-__pycache__/
-venv/
-.env
-
-# iOS backups - never commit real device data
-backups/
-*.backup
-
-# Keys and certificates
-*.pem
-*.key
-
-# OS files
-.DS_Store
+# Java keystores (HTTPS keys)
+*.p12
+*.jks

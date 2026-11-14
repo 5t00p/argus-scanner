@@ -3,7 +3,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "AuditLog")
+@Table(name = "Auditlog")
 public class AuditLog {
     
     @Id
@@ -14,7 +14,7 @@ public class AuditLog {
     @Column (name = "action", length = 255)
     private String action;
 
-    @Column (name = "'timestamp'")
+    @Column (name = "`timestamp`")
     private LocalDateTime timestamp;
 
     @Column (name = "userID")

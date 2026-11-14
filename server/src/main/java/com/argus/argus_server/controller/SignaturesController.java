@@ -31,13 +31,13 @@ public class SignaturesController {
         return signatureRepository.findByPackageName(packageName);
     }
 
-    @GetMapping("/hash/{certificate}")
+    @GetMapping("/hash/{certHash}")
     public List<Signatures> getByCertHash(@PathVariable String certHash) {
         return signatureRepository.findByCertHash(certHash);
     }
 
     @PostMapping
-    public Signature createSignature(@RequestBody Signature signature) {
+    public Signatures createSignature(@RequestBody Signatures signature) {
         return signatureRepository.save(signature);
     }
 

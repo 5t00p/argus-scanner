@@ -3,16 +3,15 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "CaseAssignment")
+@IdClass(CaseAssignmentId.class)          // 
 public class CaseAssignment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column (name = "userID")
+    @Column (name = "userID")             // ← removed @GeneratedValue
     private Integer userID;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column (case = "caseID")
+    @Column (name = "caseID")             // ← was (case = ...), removed @GeneratedValue
     private Integer caseID;
 
     public CaseAssignment() {

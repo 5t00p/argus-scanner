@@ -2,11 +2,10 @@ package com.argus.argus_server.controller;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import main.java.com.argus.argus_server.model.Report;
-import main.java.com.argus.argus_server.repository.ReportRepository;
+import com.argus.argus_server.model.Report;
+import com.argus.argus_server.repository.ReportRepository;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/reports")
