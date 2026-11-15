@@ -4,3 +4,6 @@
 # Java keystores (HTTPS keys)
 *.p12
 *.jks
+
+#stop scans from getting pushed
+scan.json

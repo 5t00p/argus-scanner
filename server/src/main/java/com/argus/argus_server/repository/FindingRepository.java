@@ -10,5 +10,6 @@ import java.util.List;
 @Repository
 public interface FindingRepository extends JpaRepository<Finding, Integer> {
     List<Finding> findByScanID(Integer scanID);
+    List<Finding> findByScanIDOrderByRiskScoreDesc(Integer scanID);
     List<Finding> findBySignaturesID(Integer signaturesID);
 }

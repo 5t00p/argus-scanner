@@ -11,7 +11,7 @@ public class Report {
     @Column(name = "reportID")
     private Integer reportID;
 
-    @Column(name = "timestamp")
+    @Column(name = "generated_at")
     private LocalDateTime timestamp;
 
     @Column(name = "scanID", unique = true)

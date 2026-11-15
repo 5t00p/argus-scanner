@@ -1,49 +1,50 @@
 package com.argus.argus_server.service;
- 
+
 import com.argus.argus_server.analysis.RiskAnalyzer;
-import org.springframework.jdbc.core.JdbcTemplate;
+import com.argus.argus_server.dto.ScanUpload;
+import com.argus.argus_server.model.Device;
+import com.argus.argus_server.model.Scan;
+import com.argus.argus_server.repository.DeviceRepository;
+import com.argus.argus_server.repository.FindingRepository;
+import com.argus.argus_server.repository.ScanRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
- 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
- 
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Optional;
+
 @Service
 public class ScanService {
- 
-    private final JdbcTemplate db;
- 
-    public ScanService(JdbcTemplate db) {
-        this.db = db;
+
+    public record Result(int scanId, boolean created) {
     }
- 
+
+    private final ScanRepository scans;
+    private final FindingRepository findings;
+    private final DeviceRepository devices;
+    private final RiskAnalyzer analyzer;
+
+    public ScanService(ScanRepository scans, FindingRepository findings, DeviceRepository devices, RiskAnalyzer analyzer) {
+        this.scans = scans;
+        this.findings = findings;
+        this.devices = devices;
+        this.analyzer = analyzer;
+    }
+
     /** Saves the scan plus a Finding for every flagged app. All or nothing: any error rolls back the whole scan. */
     @Transactional
-    public int saveScan(int deviceId, String uuid, List<?> apps) {
-        // shortcut: started_at is when the server received the scan, use the scan's scanned_at once offline sync exists
-        db.update("INSERT INTO Scan (scan_uuid, scan_status, started_at, deviceID) VALUES (?, 'analyzed', NOW(), ?)",
-                uuid, deviceId);
-        int scanId = db.queryForObject("SELECT scanID FROM Scan WHERE scan_uuid = ?", Integer.class, uuid);
- 
-        for (Object item : apps) {
-            if (!(item instanceof Map<?, ?> app) || !(app.get("package_name") instanceof String pkg)) {
-                throw new IllegalArgumentException("every app needs a package_name");
-            }
-            String certHash = app.get("cert_hash") instanceof String h ? h : null;
-            List<Map<String, Object>> match = db.queryForList(
-                    "SELECT signaturesID, app_family FROM Signatures WHERE package_name = ? OR cert_hash = ? LIMIT 1",
-                    pkg, certHash);
- 
-            Object signatureId = match.isEmpty() ? null : match.get(0).get("signaturesID");
-            String family = match.isEmpty() ? null : Objects.toString(match.get(0).get("app_family"), "unknown family");
-            RiskAnalyzer.Result result = RiskAnalyzer.analyze(app, family);
- 
-            if (result.flagged()) {
-                db.update("INSERT INTO Finding (package_name, reason, risk_score, scanID, signaturesID) VALUES (?, ?, ?, ?, ?)",
-                        pkg, String.join("; ", result.reasons()), result.score(), scanId, signatureId);
-            }
+    public Result saveScan(int deviceId, ScanUpload upload) {
+        Device device = devices.findById(deviceId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "device " + deviceId + " not found"));
+
+        Optional<Scan> existing = scans.findByScanUuid(upload.scanUuid());
+        if (existing.isPresent()) {
+            return new Result(existing.get().getScanID(), false); // same scan uploaded again
         }
-        return scanId;
+
+        Scan scan = scans.save(new Scan(upload.scanUuid(), device.getDeviceID()));
+        findings.saveAll(scan.runScan(upload.apps(), analyzer));
+        return new Result(scan.getScanID(), true);
     }
 }

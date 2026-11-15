@@ -1,5 +1,6 @@
 package com.argus.argus_server.model;
 
+import com.argus.argus_server.dto.ScannedApp;
 import jakarta.persistence.*;
 
 @Entity
@@ -25,6 +26,11 @@ public class Signatures {
 
     // Getters and Setters
     public Signatures() {
+    }
+
+    public boolean matchesApp(ScannedApp app) {
+        return (packageName != null && packageName.equalsIgnoreCase(app.packageName()))
+                || (certHash != null && certHash.equalsIgnoreCase(app.certHash()));
     }
 
     public Integer getSignaturesID() {
