@@ -45,11 +45,9 @@ public class Scan {
 
     @PrePersist
     protected void onCreate() {
-        // shortcut: started_at is when the server received the scan, use the scan's scanned_at once offline sync exists
         startedAt = LocalDateTime.now();
     }
 
-    /** Runs every app through the analyzer and returns a Finding for each flagged one. */
     public List<Finding> runScan(List<ScannedApp> apps, RiskAnalyzer analyzer) {
         List<Finding> findings = new ArrayList<>();
         for (ScannedApp app : apps) {
