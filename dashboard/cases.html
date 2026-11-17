@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Argus - Case Management</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Argus - Dashboard</h1>
+    </header>
+
+    <nav>
+        <a href="index.html">Dashboard</a>
+        <a href="cases.html">Cases</a>
+        <a href="scans.html">Scans</a>
+        <a href="reports.html">Reports</a>
+        <a href="signatures.html">Signatures</a>
+    </nav>
+
+    <main>
+        <h1>Case Management</h1>
+        <p>View and manage existing Argus cases.</p>
+
+        <section class="scan-history">
+            <h2>Existing Cases</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Case ID</th>
+                        <th>Status</th>
+                        <th>Survivor Reference</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody id="casesBody">
+                    <tr>
+                        <td colspan="4">Loading cases...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <script src="js/api.js" defer></script>
+    <script src="js/cases.js" defer></script>
+
+</body>
+</html>

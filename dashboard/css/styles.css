@@ -29,10 +29,13 @@ main {
 
 .dashboard-stats {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 20px;
     margin-top: 25px;
     margin-bottom: 30px;
+}
+.dashboard-stats .stat-card:last-child {
+    grid-column: 2;
 }
 
 .stat-card {
@@ -113,13 +116,26 @@ main {
 
 @media (max-width: 800px) {
     .dashboard-stats {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .dashboard-stats .stat-card {
+        grid-column: span 2;
+    }
+
+    .dashboard-stats .stat-card:last-child {
+        grid-column: 2 / span 2;
     }
 }
 
 @media (max-width: 480px) {
     .dashboard-stats {
         grid-template-columns: 1fr;
+    }
+
+    .dashboard-stats .stat-card,
+    .dashboard-stats .stat-card:last-child {
+        grid-column: 1;
     }
 }
 

@@ -1,6 +1,5 @@
 const findingsBody = document.getElementById("findingsBody");
 
-// Read the scan ID from the URL
 const params = new URLSearchParams(window.location.search);
 const scanId = params.get("scanId");
 
@@ -31,7 +30,6 @@ async function loadFindings(scanId) {
         findings.forEach(function(finding) {
             const row = document.createElement("tr");
 
-            // Use textContent to safely display server data
             [
                 finding.package_name,
                 finding.risk_score,

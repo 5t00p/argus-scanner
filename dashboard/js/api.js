@@ -1,4 +1,4 @@
-const API_BASE = "";
+const API_BASE = window.location.origin;
 
 async function apiRequest(endpoint, options = {}) {
     const response = await fetch(API_BASE + endpoint, options);
