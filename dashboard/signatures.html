@@ -1,0 +1,36 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Argus - Signatures</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <h1>Argus - Signatures</h1>
+
+    <nav>
+        <a href="index.html">Dashboard</a>
+        <a href="scans.html">Scans</a>
+        <a href="reports.html">Reports</a>
+        <a href="signatures.html">Signatures</a>
+    </nav>
+
+    <main>
+        <h2>Detection Signatures</h2>
+
+        <p>
+            View known application signatures used
+            to identify potential stalkerware.
+        </p>
+
+        <p id="signatureStatus">Loading signatures...</p>
+
+        <ul id="signatureList"></ul>
+    </main>
+
+    <script src="js/api.js"></script>
+    <script src="js/signatures.js"></script>
+</body>
+</html>
