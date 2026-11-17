@@ -10,4 +10,6 @@ public interface CaseAssignmentRepository extends JpaRepository<CaseAssignment, 
     List<CaseAssignment> findByUserID(Integer userID);
     List<CaseAssignment> findByCaseID(Integer caseID);
     List<CaseAssignment> findByUserIDAndCaseID(Integer userID, Integer caseID);
+    boolean existsByCaseID(Integer caseID);
+    boolean existsByUserID(Integer userID);
 }

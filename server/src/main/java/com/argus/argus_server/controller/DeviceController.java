@@ -6,14 +6,23 @@ import com.argus.argus_server.repository.DeviceRepository;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
+
+import com.argus.argus_server.repository.VictimCaseRepository;
+import org.springframework.http.ResponseEntity;
+import com.argus.argus_server.repository.ScanRepository;
+
 @RestController
 @RequestMapping("/api/devices")
 public class DeviceController {
     
     private final DeviceRepository deviceRepository;
+    private final VictimCaseRepository vCaseRepository;
+    private final ScanRepository scanRepository;
 
-    public DeviceController(DeviceRepository deviceRepository) {
+    public DeviceController(DeviceRepository deviceRepository, VictimCaseRepository vCaseRepository, ScanRepository scanRepository) {
         this.deviceRepository = deviceRepository;
+        this.vCaseRepository = vCaseRepository;
+        this.scanRepository = scanRepository;
     }
 
     @GetMapping
@@ -35,4 +44,48 @@ public class DeviceController {
     public Device createDevice(@RequestBody Device device) {
         return deviceRepository.save(device);
     }
+
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Device> updateDevice(@PathVariable Integer id, @RequestBody Device updatedDevice) {
+
+    Device existingDevice = deviceRepository.findById(id).orElse(null);
+    if (existingDevice == null) {
+        return ResponseEntity.notFound().build();
+    }
+
+    if (updatedDevice.getCaseID() != null && !vCaseRepository.existsById(updatedDevice.getCaseID())) {
+        return ResponseEntity.badRequest().build();
+    }
+
+    if (updatedDevice.getPlatform() != null) {
+        existingDevice.setPlatform(updatedDevice.getPlatform());
+    }
+
+    if (updatedDevice.getModel() != null) {
+        existingDevice.setModel(updatedDevice.getModel());
+    }
+
+    if (updatedDevice.getCaseID() != null) {
+        existingDevice.setCaseID(updatedDevice.getCaseID());
+    }
+    Device savedDevice = deviceRepository.save(existingDevice);
+    return ResponseEntity.ok(savedDevice);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteDevice(@PathVariable Integer id) {
+
+        if (!deviceRepository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+
+        if (scanRepository.existsByDeviceID(id)) {
+            return ResponseEntity.status(409).build();
+        }
+
+        deviceRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }

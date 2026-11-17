@@ -4,5 +4,6 @@ import com.argus.argus_server.model.AuditLog;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AuditlogRepository extends JpaRepository<AuditLog, Integer> {
-    
+    boolean existsByCaseID(Integer caseID);
+    boolean existsByUserID(Integer userID);
 }

@@ -46,4 +46,9 @@ public class ScanController {
         return ResponseEntity.status(result.created() ? HttpStatus.CREATED : HttpStatus.OK)
                 .body(Map.of("scan_id", result.scanId()));
     }
+
+    @PostMapping("/api/scans")
+    public ResponseEntity<Map<String, Object>> createScan(@RequestParam("deviceId") int deviceId, @RequestBody ScanUpload upload){
+    return uploadScan(deviceId, upload);
+    }
 }
