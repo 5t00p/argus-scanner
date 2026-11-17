@@ -1,4 +1,4 @@
-const API_BASE = "http://localhost:8080";
+const API_BASE = "";
 
 async function apiRequest(endpoint, options = {}) {
     const response = await fetch(API_BASE + endpoint, options);
