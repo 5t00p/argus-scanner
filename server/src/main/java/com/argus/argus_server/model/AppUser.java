@@ -1,4 +1,7 @@
 package com.argus.argus_server.model;
+
+import com.argus.argus_server.security.PasswordHasher;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -10,6 +13,7 @@ public class AppUser {
     @Column (name = "userID")
     private Integer userID;
 
+    @JsonIgnore // never send password hashes to the dashboard
     @Column (name = "password_hash", length = 255)
     private String passwordHash;
 
@@ -25,6 +29,16 @@ public class AppUser {
     public AppUser() {
     }
 
+    /** Class diagram User.login(): true if the password matches this user's stored hash. */
+    public boolean login(String password) {
+        return PasswordHasher.matches(password, passwordHash);
+    }
+
+    /** Stores a salted hash of the password, never the password itself. */
+    public void setPassword(String password) {
+        this.passwordHash = PasswordHasher.hash(password);
+    }
+
     public Integer getUserID() {
         return userID;
     }
@@ -33,6 +47,7 @@ public class AppUser {
         this.userID = userID;
     }
 
+    @JsonIgnore
     public String getPasswordHash() {
         return passwordHash;
     }

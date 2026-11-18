@@ -4,6 +4,8 @@
 # Java keystores (HTTPS keys)
 *.p12
 *.jks
+*.cer
+!scanner-android/app/src/main/res/raw/argus_cert.cer
 
 #stop scans from getting pushed
 scan.json

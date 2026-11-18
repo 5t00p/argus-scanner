@@ -18,6 +18,12 @@ import com.argus.argus_server.repository.CaseAssignmentRepository;
 import com.argus.argus_server.repository.AuditlogRepository;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.http.HttpStatus;
+import com.argus.argus_server.security.AuthInterceptor;
+import com.argus.argus_server.security.SessionStore;
+import jakarta.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
@@ -41,6 +47,30 @@ public class UserController {
     @GetMapping("/{id}")
     public AppUser getUser(@PathVariable Integer id) {
         return userRepository.findById(id).orElse(null);
+    }
+
+    public record UserCreateRequest(String name, String email, String role, String password) {}
+
+    @PostMapping
+    public ResponseEntity<?> createUser(@RequestBody UserCreateRequest request, HttpServletRequest http) {
+        if (http.getAttribute(AuthInterceptor.SESSION_ATTRIBUTE) instanceof SessionStore.Session session
+                && !"admin".equals(session.role())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", "Only admins can add users"));
+        }
+        if (request.email() == null || request.password() == null || request.password().length() < 8) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Email and a password of at least 8 characters are required"));
+        }
+        if (userRepository.findByEmail(request.email().trim()).isPresent()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error", "That email is already in use"));
+        }
+        AppUser user = new AppUser();
+        user.setName(request.name());
+        user.setEmail(request.email().trim());
+        user.setRole(request.role() == null ? "advocate" : request.role());
+        user.setPassword(request.password());
+        AppUser saved = userRepository.save(user);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new UserUpdateResponse(saved.getUserID(), saved.getName(), saved.getEmail(), saved.getRole()));
     }
 
     public record UserUpdateRequest(String name, String email, String role) {}
