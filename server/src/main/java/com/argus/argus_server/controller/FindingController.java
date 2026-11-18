@@ -39,8 +39,4 @@ public class FindingController {
         return findingRepository.findBySignaturesID(signaturesID);
     }
 
-    @PostMapping
-    public Finding createFinding(@RequestBody Finding finding) {
-        return findingRepository.save(finding);
-    }
 }

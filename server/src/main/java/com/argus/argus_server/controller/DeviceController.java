@@ -42,6 +42,11 @@ public class DeviceController {
 
     @PostMapping
     public Device createDevice(@RequestBody Device device) {
+        device.setDeviceID(null); // a create must never overwrite an existing device
+        if (device.getCaseID() == null || !vCaseRepository.existsById(device.getCaseID())) {
+            throw new IllegalArgumentException("caseID must be an existing case");
+        }
+        device.validate();
         return deviceRepository.save(device);
     }
 
@@ -69,6 +74,7 @@ public class DeviceController {
     if (updatedDevice.getCaseID() != null) {
         existingDevice.setCaseID(updatedDevice.getCaseID());
     }
+    existingDevice.validate();
     Device savedDevice = deviceRepository.save(existingDevice);
     return ResponseEntity.ok(savedDevice);
     }

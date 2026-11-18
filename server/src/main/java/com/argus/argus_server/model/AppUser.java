@@ -31,6 +31,9 @@ public class AppUser {
 
     /** Class diagram User.login(): true if the password matches this user's stored hash. */
     public boolean login(String password) {
+        if (password == null || password.length() > 100) {
+            return false; // hashing a huge "password" is slow, so don't even try
+        }
         return PasswordHasher.matches(password, passwordHash);
     }
 

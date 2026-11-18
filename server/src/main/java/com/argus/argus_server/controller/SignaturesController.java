@@ -44,6 +44,7 @@ public class SignaturesController {
 
     @PostMapping
     public Signatures createSignature(@RequestBody Signatures signature) {
+        signature.setSignaturesID(null); // a create must never overwrite an existing signature
         return signatureRepository.save(signature);
     }
 

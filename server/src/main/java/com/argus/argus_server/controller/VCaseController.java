@@ -41,8 +41,12 @@ public class VCaseController {
 
     @PostMapping
     public VictimCase createCase(@RequestBody VictimCase victimCase) {
-        victimCase.setCaseID(null); // Ensure the ID is null so that a new case is created
-        return vCaseRepository.save(victimCase);
+        // build a fresh case so the request can't choose its own ID or opened date
+        VictimCase newCase = new VictimCase();
+        newCase.changeSurvivorRef(victimCase.getSurvivorRef());
+        newCase.updateStatus(victimCase.getStatus() == null ? "open" : victimCase.getStatus());
+        newCase.setOpenedAt(java.time.LocalDateTime.now());
+        return vCaseRepository.save(newCase);
     }
 
     @PutMapping("/{id}")
@@ -50,11 +54,11 @@ public class VCaseController {
         return vCaseRepository.findById(id)
         .map(existingCase -> {
             if (updatedCase.getStatus() != null) {
-                existingCase.setStatus(updatedCase.getStatus());
+                existingCase.updateStatus(updatedCase.getStatus());
             }
 
             if (updatedCase.getSurvivorRef() != null) {
-                existingCase.setSurvivorRef(updatedCase.getSurvivorRef());
+                existingCase.changeSurvivorRef(updatedCase.getSurvivorRef());
             }
 
             VictimCase savedCase = vCaseRepository.save(existingCase);

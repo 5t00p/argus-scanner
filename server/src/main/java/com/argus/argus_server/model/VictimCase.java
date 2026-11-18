@@ -23,6 +23,24 @@ public class VictimCase {
     public VictimCase() {
     }
 
+    /** Class diagram Case.updateStatus(): a case is only ever "open" or "closed". */
+    public void updateStatus(String newStatus) {
+        if (!"open".equals(newStatus) && !"closed".equals(newStatus)) {
+            throw new IllegalArgumentException("Status must be \"open\" or \"closed\"");
+        }
+        this.status = newStatus;
+    }
+
+    public void changeSurvivorRef(String reference) {
+        if (reference == null || reference.isBlank()) {
+            throw new IllegalArgumentException("Survivor reference is required");
+        }
+        if (reference.trim().length() > 100) {
+            throw new IllegalArgumentException("Survivor reference must be 100 characters or less");
+        }
+        this.survivorRef = reference.trim();
+    }
+
     public Integer getCaseID() {
         return caseID;
     }

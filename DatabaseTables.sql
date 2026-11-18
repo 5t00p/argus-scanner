@@ -57,7 +57,7 @@ app_family varchar(100)
 create table Finding(
 findingID int primary key auto_increment,
 package_name VARCHAR(255),
-reason TEXT(100),
+reason TEXT,
 risk_score int,
 scanID INT,
 signaturesID INT,

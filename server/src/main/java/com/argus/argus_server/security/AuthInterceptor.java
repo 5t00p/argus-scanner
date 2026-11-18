@@ -13,6 +13,8 @@ import java.io.IOException;
 public class AuthInterceptor implements HandlerInterceptor {
 
     public static final String SESSION_ATTRIBUTE = "argusSession";
+    // a real scan of ~300 apps is well under 1 MB, so anything over 5 MB is not a scan
+    private static final long MAX_BODY_BYTES = 5L * 1024 * 1024;
 
     private final SessionStore sessions;
     private final boolean enabled;
@@ -24,6 +26,12 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
+        if (request.getContentLengthLong() > MAX_BODY_BYTES) {
+            response.setStatus(413);
+            response.setContentType("application/json");
+            response.getWriter().write("{\"error\":\"request is too large\"}");
+            return false;
+        }
         if (!enabled || isPublic(request)) {
             return true;
         }

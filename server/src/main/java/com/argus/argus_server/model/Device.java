@@ -26,6 +26,17 @@ public class Device {
 
     }
 
+    /** Checks the fields before saving: Android or iOS only, and a model name that fits the column. */
+    public void validate() {
+        if (platform == null || !(platform.equalsIgnoreCase("android") || platform.equalsIgnoreCase("ios"))) {
+            throw new IllegalArgumentException("Platform must be \"android\" or \"ios\"");
+        }
+        platform = platform.toLowerCase();
+        if (model != null && model.length() > 100) {
+            throw new IllegalArgumentException("Model must be 100 characters or less");
+        }
+    }
+
     public Integer getDeviceID() {
         return deviceID;
     }

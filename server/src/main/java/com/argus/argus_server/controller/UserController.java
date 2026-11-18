@@ -57,8 +57,12 @@ public class UserController {
                 && !"admin".equals(session.role())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", "Only admins can add users"));
         }
-        if (request.email() == null || request.password() == null || request.password().length() < 8) {
-            return ResponseEntity.badRequest().body(Map.of("error", "Email and a password of at least 8 characters are required"));
+        if (request.email() == null || request.password() == null
+                || request.password().length() < 8 || request.password().length() > 100) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Email required and a minimum password length of 8"));
+        }
+        if (!request.email().trim().matches("[^@\\s]+@[^@\\s]+") || request.email().trim().length() > 100) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Enter a valid email address"));
         }
         if (userRepository.findByEmail(request.email().trim()).isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error", "That email is already in use"));
