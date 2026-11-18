@@ -42,12 +42,17 @@ async function loadDashboard() {
         findingsByScan.forEach(function(findings) {
             totalThreats += findings.length;
 
-            findings.forEach(function(finding) {
-
-                if (String(finding.classification || "")trim().toLowerCase() === "high risk") {
-                    highRiskFindings++;
+           
+        findings.forEach(function(finding) {
+        if (
+            finding.signaturesID == null &&
+            finding.risk_score != null &&
+            Number(finding.risk_score) >= 75
+                   ) {
+                   highRiskFindings++;
                 }
             });
+
 
         threatsElement.textContent = totalThreats;
         highRiskElement.textContent = highRiskFindings;
@@ -57,7 +62,7 @@ async function loadDashboard() {
 
         threatsElement.textContent = "Error";
         highRiskElement.textContent = "Error";
-        appsElement.textContent = "N/A";
+        lastScanElement.textContent = "N/A";
     }
 }
 
