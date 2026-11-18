@@ -32,7 +32,7 @@ async function loadDashboard() {
 
         const findingsByScan = await Promise.all(
             scans.map(scan =>
-                apiRequest("/api/scans/" + scan.scanID + "/findings")
+                apiRequest("/api/findings/scans/" + scan.scanID + "/findings")
             )
         );
 
