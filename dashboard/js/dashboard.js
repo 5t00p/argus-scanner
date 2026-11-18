@@ -43,12 +43,11 @@ async function loadDashboard() {
             totalThreats += findings.length;
 
             findings.forEach(function(finding) {
-                //"HighRisk" threshold is 70 for now
-                if (Number(finding.risk_score) >= 70) {
+
+                if (String(finding.classification || "")trim().toLowerCase() === "high risk") {
                     highRiskFindings++;
                 }
             });
-        });
 
         threatsElement.textContent = totalThreats;
         highRiskElement.textContent = highRiskFindings;

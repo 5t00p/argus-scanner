@@ -70,12 +70,15 @@ if (uploadScanForm) {
                 body: JSON.stringify(scanData)
             });
 
-            uploadStatus.textContent =
-                "Scan uploaded successfully! Scan ID: " + result.scan_id;
 
-            await loadScanHistory();
+            if (result.scan_id == null) {
+                throw new Error("Server did not return a scan ID.");
+            }
 
+            uploadStatus.textContent = "Scan analyzed successfully! Opening report...";
             scanFile.value = "";
+
+            window.location.href = "reports.html?scanId=" + encodeURIComponent(result.scan_id);
 
         } catch (error) {
             console.error("Scan upload failed:", error);

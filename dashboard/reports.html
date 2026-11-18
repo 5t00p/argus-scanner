@@ -1,9 +1,15 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
     <title>Argus - Reports</title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
+
 <body>
 
     <h1>Argus - Reports</h1>
@@ -18,7 +24,9 @@
     </nav>
 
     <main>
+
         <section class="report-overview">
+
             <h2>Scan Reports</h2>
 
             <p>
@@ -29,38 +37,210 @@
             </p>
 
             <h3>Report Information</h3>
+
             <ul>
-                <li>Scan ID: Identifies a completed scan.</li>
-                <li>Device: Identifies the scanned device.</li>
-                <li>Findings: Lists suspicious applications.</li>
-                <li>Risk Level: Indicates potential threats.</li>
-                <li>Status: Shows the scan's current status.</li>
+                <li>
+                    Scan ID: Identifies a completed scan.
+                </li>
+
+                <li>
+                    Device: Identifies the scanned device.
+                </li>
+
+                <li>
+                    Findings: Lists suspicious applications.
+                </li>
+
+                <li>
+                    Risk Level: Indicates potential threats.
+                </li>
+
+                <li>
+                    Status: Shows the scan's current status.
+                </li>
             </ul>
 
             <h3>Understanding Risk Levels</h3>
 
             <p>
-                High Risk: Applications with potentially
-                dangerous behavior or permissions.
+                High Risk: Applications with potentially dangerous behavior or permissions.
             </p>
 
             <p>
-                Medium Risk: Applications that may require
-                additional review.
+                Medium Risk: Applications that may require additional review.
             </p>
 
             <p>
-                Low Risk: Applications with fewer
-                suspicious indicators.
+                Low Risk: Applications with fewer suspicious indicators.
             </p>
 
             <p>
-                Detection results are indicators, not
-                definitive proof of stalkerware.
+                Detection results are indicators, not definitive proof of stalkerware.
             </p>
+
         </section>
+
+
+        <section class="report-generator">
+
+            <h2>Generate Security Scan Report</h2>
+
+            <p>
+                Select a completed ARGUS scan to view its device information, scan date, and
+                detected security findings.
+            </p>
+
+            <div class="report-controls">
+
+                <label for="reportScanSelect">
+                    Select Completed Scan:
+                </label>
+
+                <select id="reportScanSelect" disabled>
+                    <option value="">
+                        Loading scans...
+                    </option>
+                </select>
+
+                <button
+                    type="button"
+                    id="generateReport"
+                    disabled>
+                    View Report
+                </button>
+
+                <button
+                    type="button"
+                    id="printReport"
+                    disabled>
+                    Print Report
+                </button>
+
+            </div>
+
+            <p id="reportStatus" role="status">
+                Select a completed scan to generate a security report.
+            </p>
+
+
+            <article
+                id="generatedReport"
+                class="printable-report"
+                hidden>
+
+                <header class="generated-report-header">
+
+                    <h2>ARGUS Security Scan Report</h2>
+
+                    <p>
+                        Device Security Assessment
+                    </p>
+
+                </header>
+
+
+
+                <section class="report-details">
+
+                    <h3>Report Information</h3>
+
+                    <p>
+                        <strong>Scan ID:</strong>
+                        <span id="reportScanId"></span>
+                    </p>
+
+                    <p>
+                        <strong>Device:</strong>
+                        <span id="reportDeviceModel"></span>
+                        (<span id="reportPlatform"></span>,
+                        Device #<span id="reportDeviceId"></span>)
+                    </p>
+
+                    <p>
+                        <strong>Scan Date:</strong>
+                        <span id="reportDate"></span>
+                    </p>
+
+                    <p>
+                        <strong>Findings:</strong>
+                        <span id="reportFindingSummary"></span>
+                    </p>
+
+                    <p>
+                        <strong>Risk Level:</strong>
+                        <span id="reportRiskLevel"></span>
+                    </p>
+
+                    <p>
+                        <strong>Status:</strong>
+                        <span id="reportScanStatus"></span>
+                    </p>
+
+                </section>
+
+
+
+                <section class="report-findings">
+
+                    <h3>Security Findings</h3>
+
+
+                    <section class="finding-group">
+
+                        <h4>Known Stalkerware</h4>
+
+                        <ul id="knownStalkerwareList">
+                        </ul>
+
+                    </section>
+
+
+                    <section class="finding-group">
+
+                        <h4>High Risk</h4>
+
+                        <ul id="highRiskList">
+                        </ul>
+
+                    </section>
+
+
+                    <section class="finding-group">
+
+                        <h4>Suspicious</h4>
+
+                        <ul id="suspiciousList">
+                        </ul>
+
+                    </section>
+
+                </section>
+
+
+                <footer class="report-footer">
+
+                    <p>
+                        ARGUS identifies potential security threats based on
+                        scan results.
+
+                        Findings indicate suspicious behavior and do not constitute
+                        definitive proof of stalkerware.
+                    </p>
+
+                </footer>
+
+            </article>
+
+
+        </section>
+
+
     </main>
+
+
+    <script src="js/api.js" defer></script>
+
+    <script src="js/reports.js" defer></script>
 
 </body>
 </html>
-
