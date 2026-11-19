@@ -2,16 +2,18 @@
 
 /* Colors in one place, so the whole site can be re-themed here */
 :root {
-    --navy: #0f1b2d;
-    --navy-soft: #1c2b42;
-    --accent: #0f766e;
-    --accent-dark: #115e59;
+    /* palette taken from the team logo: peacock blue, emerald feathers, gold eye */
+    --navy: #0a1f44;
+    --navy-soft: #163a6b;
+    --accent: #0b7a62;
+    --accent-dark: #076b5e;
+    --accent-soft: #e6f4ef;
     --danger: #b91c1c;
     --danger-dark: #991b1b;
     --text: #1e293b;
     --muted: #64748b;
     --border: #e2e8f0;
-    --page: #f5f7fa;
+    --page: #f7f5ef;
     --card: #ffffff;
     --gold: #d4a640; /* from the logo */
 }
@@ -27,12 +29,13 @@ body {
     color: var(--text);
     margin: 0;
     line-height: 1.5;
+    min-height: 100vh;
 }
 
 /* ---------- Header + navigation: one dark bar ---------- */
 
 body > header {
-    background-color: var(--navy);
+    background: linear-gradient(90deg, var(--navy), #0c3a57);
     padding: 14px 32px 0;
 }
 
@@ -52,12 +55,12 @@ body > header:not(:has(+ nav)) {
 }
 
 nav {
-    background-color: var(--navy);
+    background: linear-gradient(90deg, var(--navy), #0c3a57);
     padding: 6px 32px 0;
     display: flex;
     gap: 26px;
     flex-wrap: wrap;
-    border-bottom: 1px solid var(--navy-soft);
+    border-bottom: 3px solid var(--gold);
 }
 
 nav a {
@@ -88,6 +91,7 @@ main {
 }
 
 main > h2 {
+    color: var(--navy);
     /* Marcellus: classical letters that echo the Greek myth behind the name */
     font-family: "Marcellus", Georgia, serif;
     font-weight: 400;
@@ -97,7 +101,7 @@ main > h2 {
 }
 
 main > p {
-    color: var(--muted);
+    color: #334155; /* darker than muted so it reads over the background photo */
     margin-top: 0;
 }
 
@@ -189,8 +193,8 @@ td {
 }
 
 th {
-    background-color: #f1f5f9;
-    color: #475569;
+    background-color: var(--accent-soft);
+    color: var(--accent-dark);
     font-size: 13px;
     font-weight: 600;
     text-transform: uppercase;
@@ -198,7 +202,7 @@ th {
 }
 
 tbody tr:hover {
-    background-color: #f8fafc;
+    background-color: #f6faf8;
 }
 
 td.actions {
@@ -243,7 +247,7 @@ button.secondary {
 }
 
 button.secondary:hover {
-    background-color: #f0fdfa;
+    background-color: var(--accent-soft);
 }
 
 button.danger {
@@ -323,7 +327,7 @@ select {
 }
 
 .pairing-box {
-    border: 2px solid var(--accent);
+    border: 2px solid var(--gold);
     text-align: center;
 }
 
@@ -522,4 +526,93 @@ select {
 section h2 {
     font-size: 17px;
     margin: 0 0 12px;
+}
+/* ---------- Sidebar layout: nav on the left, content sits on the page (no boxes) ---------- */
+body:has(> nav) {
+    display: grid;
+    grid-template-columns: 230px minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+}
+/* the sidebar is a fixed strip behind the header + nav, so it always runs full height */
+body:has(> nav)::before {
+    content: "";
+    position: fixed;
+    top: 0; bottom: 0; left: 0;
+    width: 230px;
+    z-index: -1;
+    border-right: 3px solid var(--gold);
+    background:
+        linear-gradient(rgba(10, 31, 68, 0.86), rgba(7, 60, 70, 0.9)),
+        url("../img/argus-bg-dark.jpg") center / cover;
+}
+body:has(> nav) > header,
+body:has(> nav) > nav {
+    grid-column: 1;
+    background: none;
+}
+body:has(> nav) > header { padding: 28px 24px 8px; }
+body > header h1 { width: 150px; height: 96px; }
+body:has(> nav) > nav {
+    flex-direction: column;
+    gap: 2px;
+    padding: 12px 14px;
+    border-bottom: none;
+    position: sticky; top: 0; align-self: stretch;
+}
+nav a {
+    padding: 10px 12px;
+    border-bottom: none;
+    border-left: 3px solid transparent;
+    border-radius: 0 6px 6px 0;
+}
+nav a:hover { background: rgba(255,255,255,0.06); border-left-color: var(--gold); }
+nav a[onclick] { margin-left: 0; margin-top: 24px; color: #94a3b8; }
+body:has(> nav) > main { grid-column: 2; grid-row: 1 / span 2; margin: 0; max-width: 1080px; padding: 40px 48px; }
+main > h2 { font-size: 36px; }
+main > p { color: #475569; padding-bottom: 20px; border-bottom: 1px solid #d9d2bf; }
+
+.card, .scan-history, .scan-upload, .scan-actions, .report-overview, .report-generator {
+    background: none; border: none; box-shadow: none; border-radius: 0;
+    padding: 28px 0; margin: 0;
+    border-bottom: 1px solid #d9d2bf;
+}
+section h3, section h2 {
+    font-family: "Marcellus", Georgia, serif; font-weight: 400; font-size: 21px; color: var(--accent-dark);
+}
+th { background: none; color: #8a6d2a; border-bottom: 2px solid var(--gold); }
+tbody tr:hover { background-color: rgba(11,122,98,0.05); }
+.stat-card { background: none; border: none; box-shadow: none; border-left: 3px solid var(--gold); border-radius: 0; padding: 4px 0 4px 18px; }
+.pairing-box { background: rgba(213,167,70,0.1); border: none; border-left: 4px solid var(--gold); border-radius: 0; padding: 24px; margin: 24px 0; }
+input, select { background: #fffdf8; }
+
+/* login page: dark feather photo behind the sign-in card */
+body:not(:has(> nav)) {
+    background:
+        linear-gradient(rgba(10, 31, 68, 0.55), rgba(7, 60, 70, 0.6)),
+        url("../img/argus-bg-dark.jpg") center / cover fixed;
+    min-height: 100vh;
+}
+
+/* phones and narrow windows: the sidebar turns back into a bar across the top */
+@media (max-width: 800px) {
+    body:has(> nav) { display: block; }
+    body:has(> nav)::before { display: none; }
+    body:has(> nav) > header,
+    body:has(> nav) > nav {
+        background: linear-gradient(90deg, var(--navy), #0c3a57);
+    }
+    body:has(> nav) > header { padding: 14px 16px 0; }
+    body > header h1 { width: 100px; height: 64px; }
+    body:has(> nav) > nav {
+        position: static;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 4px 16px;
+        padding: 6px 16px 8px;
+        border-bottom: 3px solid var(--gold);
+    }
+    nav a { padding: 6px 0; border-left: none; border-radius: 0; }
+    nav a:hover { background: none; }
+    nav a[onclick] { margin-top: 0; }
+    body:has(> nav) > main { padding: 24px 16px; }
 }
