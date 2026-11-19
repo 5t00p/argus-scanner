@@ -51,7 +51,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         if (path.equals("/api/login")) {
             return true;
         }
-        // shortcut: the phone scanner has no login yet, so scan uploads stay open; replace with a one-time pairing code
-        return "POST".equals(request.getMethod()) && path.matches("/api/devices/\\d+/scans");
+        // the scanner app has no login: it proves itself with a one-time pairing code from the dashboard instead
+        return "POST".equals(request.getMethod()) && path.matches("/api/pairing/\\d{6}/scans");
     }
 }

@@ -6,7 +6,9 @@
 </head>
 <body>
 
-    <h1>Argus - Scan Findings</h1>
+    <header>
+        <h1>Argus</h1>
+    </header>
 
     <nav>
         <a href="index.html">Dashboard</a>
@@ -15,22 +17,23 @@
         <a href="scans.html">Scans</a>
         <a href="reports.html">Reports</a>
         <a href="signatures.html">Signatures</a>
+        <a href="#" onclick="logout(); return false;">Log out</a>
     </nav>
 
     <main>
         <h2>Scan Findings</h2>
 
-        <p>Scan ID: <span id="selectedScanId">-</span></p>
+        <p id="scanContext">Loading scan...</p>
 
         <section class="scan-history">
-            <h2>Flagged Applications</h2>
+            <h3>Flagged Apps</h3>
 
             <table>
                 <thead>
                     <tr>
-                        <th>Application Package</th>
-                        <th>Risk Score</th>
-                        <th>Reason Flagged</th>
+                        <th>App</th>
+                        <th>Risk</th>
+                        <th>Why it was flagged</th>
                     </tr>
                 </thead>
 

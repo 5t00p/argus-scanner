@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         // 10.0.2.2 is the emulator's address for the PC; on a real phone use https://localhost:8080 with "adb reverse tcp:8080 tcp:8080"
         val serverInput = field("Server address", "https://10.0.2.2:8080",
             InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_URI)
-        val deviceInput = field("Device ID (from the dashboard)", "1", InputType.TYPE_CLASS_NUMBER)
+        val codeInput = field("Pairing code (from the dashboard)", "", InputType.TYPE_CLASS_NUMBER)
 
         val output = TextView(this).apply {
             setTextColor(Color.parseColor("#E0E0E0"))
@@ -55,9 +55,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         button.setOnClickListener {
-            val deviceId = deviceInput.text.toString().toIntOrNull()
-            if (deviceId == null) {
-                output.text = "Enter the device ID from the dashboard"
+            val pairingCode = codeInput.text.toString().trim()
+            if (!pairingCode.matches(Regex("\\d{6}"))) {
+                output.text = "Enter the 6-digit pairing code from the dashboard"
                 return@setOnClickListener
             }
             val server = serverInput.text.toString().trim()
@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity() {
                 val apps = scan.getJSONArray("apps").length()
 
                 val result = try {
-                    "Scanned $apps apps\nUploaded: scan ID ${uploadScan(server, deviceId, scan)}"
+                    "Scanned $apps apps\nUploaded: scan ID ${uploadScan(server, pairingCode, scan)}"
                 } catch (e: Exception) {
                     "Scanned $apps apps\nUpload failed: ${e.message}\nSaved to ${file.absolutePath}"
                 }
@@ -90,7 +90,7 @@ class MainActivity : AppCompatActivity() {
             setPadding(dp(24), dp(24), dp(24), dp(24))
             setBackgroundColor(Color.parseColor("#1E2A38"))
             addView(serverInput)
-            addView(deviceInput)
+            addView(codeInput)
             addView(button)
             addView(output)
         })

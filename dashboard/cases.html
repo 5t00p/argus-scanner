@@ -8,7 +8,7 @@
 </head>
 <body>
     <header>
-        <h1>Argus - Dashboard</h1>
+        <h1>Argus</h1>
     </header>
 
     <nav>
@@ -18,28 +18,42 @@
         <a href="scans.html">Scans</a>
         <a href="reports.html">Reports</a>
         <a href="signatures.html">Signatures</a>
+        <a href="#" onclick="logout(); return false;">Log out</a>
     </nav>
 
     <main>
-        <h1>Case Management</h1>
-        <p>View and manage existing Argus cases.</p>
+        <h2>Cases</h2>
+        <p>Each survivor an advocate is helping gets a case. Close a case when the work is done; closed cases stay on record.</p>
+
+        <section class="card">
+            <h3>Open a New Case</h3>
+            <form id="newCaseForm" class="inline-form">
+                <label>
+                    Survivor reference
+                    <input type="text" id="newSurvivorRef" maxlength="100" placeholder="e.g. SR-0042" required>
+                </label>
+                <button type="submit">Open case</button>
+            </form>
+            <p id="caseStatus" class="form-status" role="status"></p>
+        </section>
 
         <section class="scan-history">
-            <h2>Existing Cases</h2>
+            <h3>Existing Cases</h3>
 
             <table>
                 <thead>
                     <tr>
                         <th>Case ID</th>
-                        <th>Status</th>
                         <th>Survivor Reference</th>
+                        <th>Status</th>
+                        <th>Opened</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
 
                 <tbody id="casesBody">
                     <tr>
-                        <td colspan="4">Loading cases...</td>
+                        <td colspan="5">Loading cases...</td>
                     </tr>
                 </tbody>
             </table>

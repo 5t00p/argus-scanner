@@ -1,4 +1,3 @@
-
 async function loadDashboard() {
     const lastScanElement = document.getElementById("lastScan");
     const threatsElement = document.getElementById("threatsDetected");
@@ -16,50 +15,23 @@ async function loadDashboard() {
 
         const latestScan = scans
             .filter(scan => scan.started_at)
-            .sort((a, b) =>
-                new Date(b.started_at) - new Date(a.started_at)
-            )[0];
+            .sort((a, b) => new Date(b.started_at) - new Date(a.started_at))[0];
 
-        if (latestScan) {
-            const scanDate = new Date(latestScan.started_at);
-
-            lastScanElement.textContent = isNaN(scanDate.getTime())
-                ? latestScan.started_at
-                : scanDate.toLocaleString();
-        } else {
-            lastScanElement.textContent = "Unknown";
-        }
+        lastScanElement.textContent = latestScan ? formatDate(latestScan.started_at) : "Unknown";
 
         const findingsByScan = await Promise.all(
-            scans.map(scan =>
-                apiRequest("/api/findings/scans/" + scan.scanID)
-            )
+            scans.map(scan => apiRequest("/api/scans/" + scan.scanID + "/findings"))
         );
+        const findings = findingsByScan.flat();
 
-        let totalThreats = 0;
-        let highRiskFindings = 0;
-
-        findingsByScan.forEach(function(findings) {
-            totalThreats += findings.length;
-
-           
-        findings.forEach(function(finding) {
-        if (
-            finding.signaturesID == null &&
-            finding.risk_score != null &&
-            Number(finding.risk_score) >= 75
-                   ) {
-                   highRiskFindings++;
-                }
-            });
-
-
-        threatsElement.textContent = totalThreats;
-        highRiskElement.textContent = highRiskFindings;
+        // same labels the findings page shows, so the numbers always agree
+        threatsElement.textContent = findings.length;
+        highRiskElement.textContent = findings.filter(finding =>
+            finding.classification === "Known stalkerware" || finding.classification === "High risk"
+        ).length;
 
     } catch (error) {
         console.error("Failed to load dashboard:", error);
-
         threatsElement.textContent = "Error";
         highRiskElement.textContent = "Error";
         lastScanElement.textContent = "N/A";

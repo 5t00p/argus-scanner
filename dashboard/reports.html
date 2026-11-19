@@ -12,7 +12,9 @@
 
 <body>
 
-    <h1>Argus - Reports</h1>
+    <header>
+        <h1>Argus</h1>
+    </header>
 
     <nav>
         <a href="index.html">Dashboard</a>
@@ -21,6 +23,7 @@
         <a href="scans.html">Scans</a>
         <a href="reports.html">Reports</a>
         <a href="signatures.html">Signatures</a>
+        <a href="#" onclick="logout(); return false;">Log out</a>
     </nav>
 
     <main>
@@ -63,15 +66,15 @@
             <h3>Understanding Risk Levels</h3>
 
             <p>
-                High Risk: Applications with potentially dangerous behavior or permissions.
+                <strong>Each flagged app</strong> gets one label:
+                <strong>Known stalkerware</strong> (matches a known stalkerware signature),
+                <strong>High risk</strong> (risk score 75 or more), or
+                <strong>Suspicious</strong> (risk score 50 to 74). Apps below 50 are not flagged.
             </p>
 
             <p>
-                Medium Risk: Applications that may require additional review.
-            </p>
-
-            <p>
-                Low Risk: Applications with fewer suspicious indicators.
+                <strong>The whole report</strong> is rated High if any app is Known stalkerware or High risk,
+                Medium if only Suspicious apps were found, and Low if nothing was flagged.
             </p>
 
             <p>

@@ -9,7 +9,7 @@
 <body>
 
     <header>
-        <h1>Argus - Dashboard</h1>
+        <h1>Argus</h1>
     </header>
 
     <nav>
@@ -19,11 +19,41 @@
         <a href="scans.html">Scans</a>
         <a href="reports.html">Reports</a>
         <a href="signatures.html">Signatures</a>
+        <a href="#" onclick="logout(); return false;">Log out</a>
     </nav>
 
     <main>
-        <h2>Device Management</h2>
-        <p>View and manage registered devices.</p>
+        <h2>Devices</h2>
+        <p>Add a survivor's phone to their case, then pair the Argus scanner app with it.</p>
+
+        <section class="card">
+            <h3>Add a Device to a Case</h3>
+            <form id="newDeviceForm" class="inline-form">
+                <label>
+                    Case
+                    <select id="deviceCase" required></select>
+                </label>
+                <label>
+                    Platform
+                    <select id="devicePlatform">
+                        <option value="android">Android</option>
+                        <option value="ios">iOS</option>
+                    </select>
+                </label>
+                <label>
+                    Model
+                    <input type="text" id="deviceModel" maxlength="100" placeholder="e.g. Pixel 8">
+                </label>
+                <button type="submit">Add device</button>
+            </form>
+            <p id="deviceStatus" class="form-status" role="status"></p>
+        </section>
+
+        <section id="pairingBox" class="card pairing-box" hidden>
+            <h3>Scanner Pairing Code</h3>
+            <p id="pairingCode" class="pairing-code"></p>
+            <p id="pairingInfo"></p>
+        </section>
 
         <section class="scan-history">
             <h3>Registered Devices</h3>
@@ -34,7 +64,7 @@
                         <th>Device ID</th>
                         <th>Platform</th>
                         <th>Model</th>
-                        <th>Case ID</th>
+                        <th>Case</th>
                         <th>Actions</th>
                     </tr>
                 </thead>

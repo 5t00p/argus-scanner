@@ -1,155 +1,460 @@
+@import url("https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Marcellus&display=swap");
+
+/* Colors in one place, so the whole site can be re-themed here */
+:root {
+    --navy: #0f1b2d;
+    --navy-soft: #1c2b42;
+    --accent: #0f766e;
+    --accent-dark: #115e59;
+    --danger: #b91c1c;
+    --danger-dark: #991b1b;
+    --text: #1e293b;
+    --muted: #64748b;
+    --border: #e2e8f0;
+    --page: #f5f7fa;
+    --card: #ffffff;
+    --gold: #d4a640; /* from the logo */
+}
+
+* {
+    box-sizing: border-box;
+}
 
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f6f9;
-    color: #222;
+    /* Atkinson Hyperlegible: designed by the Braille Institute for readability */
+    font-family: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+    background-color: var(--page);
+    color: var(--text);
     margin: 0;
+    line-height: 1.5;
+}
+
+/* ---------- Header + navigation: one dark bar ---------- */
+
+body > header {
+    background-color: var(--navy);
+    padding: 14px 32px 0;
+}
+
+body > header h1 {
+    margin: 0;
+    width: 100px;
+    height: 64px;
+    background: url("../img/argus-logo.png") left center / contain no-repeat;
+    /* the logo already says ARGUS: hide the text on screen but keep it for screen readers */
+    color: transparent;
+    font-size: 0;
+}
+
+/* the login page shows the big logo in its card instead of the header bar */
+body > header:not(:has(+ nav)) {
+    display: none;
 }
 
 nav {
-    background-color: #41ae82;
-    padding: 20px;
+    background-color: var(--navy);
+    padding: 6px 32px 0;
     display: flex;
-    gap: 25px;
+    gap: 26px;
     flex-wrap: wrap;
+    border-bottom: 1px solid var(--navy-soft);
 }
 
 nav a {
-    color: white;
+    color: #cbd5e1;
     text-decoration: none;
-    font-weight: bold;
+    font-weight: 500;
+    font-size: 15px;
+    padding: 10px 0 12px;
+    border-bottom: 3px solid transparent;
 }
 
 nav a:hover {
-    text-decoration: underline;
+    color: #ffffff;
+    border-bottom-color: var(--gold);
 }
 
-main {
-    padding: 30px;
+/* Log out sits on the far right */
+nav a[onclick] {
+    margin-left: auto;
 }
+
+/* ---------- Page layout ---------- */
+
+main {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 32px;
+}
+
+main > h2 {
+    /* Marcellus: classical letters that echo the Greek myth behind the name */
+    font-family: "Marcellus", Georgia, serif;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    font-size: 28px;
+    margin: 0 0 4px;
+}
+
+main > p {
+    color: var(--muted);
+    margin-top: 0;
+}
+
+h3 {
+    font-size: 17px;
+    margin: 0 0 12px;
+}
+
+a {
+    color: var(--accent);
+}
+
+/* ---------- Cards ---------- */
+
+.card,
+.scan-history,
+.scan-upload,
+.scan-actions,
+.report-overview,
+.report-generator,
+.stat-card,
+.login-container {
+    background-color: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-top: 24px;
+    box-shadow: 0 1px 2px rgba(15, 27, 45, 0.05);
+}
+
+.scan-history {
+    overflow-x: auto;
+}
+
+/* ---------- Home page stats ---------- */
 
 .dashboard-stats {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 20px;
-    margin-top: 25px;
-    margin-bottom: 30px;
+    margin-top: 24px;
 }
 
 .stat-card {
-    background-color: white;
-    padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 0;
     min-width: 0;
 }
 
 .stat-card h3 {
-    color: #555;
-    font-size: 16px;
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin: 0;
 }
 
 .stat-card p {
     font-size: 30px;
-    font-weight: bold;
+    font-weight: 700;
+    margin: 8px 0 0;
     overflow-wrap: anywhere;
 }
 
-.scan-actions {
-    background-color: white;
-    padding: 25px;
-    border-radius: 10px;
+.scan-actions ol {
+    padding-left: 20px;
+    margin: 0 0 18px;
 }
 
-.scan-actions a {
-    display: inline-block;
-    background-color: #2563eb;
-    color: white;
-    padding: 12px 20px;
-    border-radius: 6px;
-    text-decoration: none;
+.scan-actions li {
+    margin-bottom: 6px;
 }
 
-.scan-button {
-    margin-top: 20px;
-}
+/* ---------- Tables ---------- */
 
-.scan-history {
-    background-color: white;
-    padding: 25px;
-    margin-top: 25px;
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    overflow-x: auto;
-}
-
-.scan-history table {
+table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
+    margin-top: 8px;
+    font-size: 15px;
 }
 
-.scan-history th,
-.scan-history td {
-    padding: 15px;
+th,
+td {
+    padding: 12px 14px;
     text-align: left;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
 }
 
-.scan-history th {
-    background-color: #41ae82;
-    color: white;
+th {
+    background-color: #f1f5f9;
+    color: #475569;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
 }
 
-.scan-history tbody tr:hover {
-    background-color: #f4f6f9;
+tbody tr:hover {
+    background-color: #f8fafc;
 }
 
-.scan-status-line {
+td.actions {
+    white-space: nowrap;
+}
+
+td.actions button {
+    margin-right: 6px;
+}
+
+/* ---------- Buttons ---------- */
+
+button,
+.button {
+    display: inline-block;
+    background-color: var(--accent);
+    color: #ffffff;
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    padding: 8px 14px;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+button:hover,
+.button:hover {
+    background-color: var(--accent-dark);
+    border-color: var(--accent-dark);
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+button.secondary {
+    background-color: #ffffff;
+    color: var(--accent);
+}
+
+button.secondary:hover {
+    background-color: #f0fdfa;
+}
+
+button.danger {
+    background-color: #ffffff;
+    color: var(--danger);
+    border-color: #fecaca;
+}
+
+button.danger:hover {
+    background-color: var(--danger);
+    border-color: var(--danger-dark);
+    color: #ffffff;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible {
+    outline: 3px solid var(--gold);
+    outline-offset: 2px;
+}
+
+/* ---------- Forms ---------- */
+
+input,
+select {
+    font: inherit;
+    font-size: 15px;
+    padding: 8px 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background-color: #ffffff;
+    color: var(--text);
+    min-width: 0;
+}
+
+.inline-form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 16px;
+}
+
+.inline-form label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #475569;
+}
+
+.form-status,
+#uploadStatus {
+    margin: 12px 0 0;
+    color: var(--muted);
+}
+
+/* ---------- Status pills, pairing code ---------- */
+
+.status-pill {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.status-pill.open {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.status-pill.closed {
+    background-color: #e2e8f0;
+    color: #475569;
+}
+
+.pairing-box {
+    border: 2px solid var(--accent);
+    text-align: center;
+}
+
+.pairing-code {
+    font-family: "SFMono-Regular", Consolas, "Courier New", monospace;
+    font-size: 46px;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    color: var(--navy);
+    margin: 4px 0 8px;
+}
+
+#pairingInfo {
+    color: var(--muted);
+    max-width: 560px;
+    margin: 0 auto;
+}
+
+/* ---------- Signatures list ---------- */
+
+#signatureList {
+    list-style: none;
+    padding: 0;
+}
+
+#signatureList li {
+    background-color: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-bottom: 10px;
+}
+
+/* ---------- Reports ---------- */
+
+.report-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin: 12px 0;
+}
+
+.printable-report {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-top: 16px;
+}
+
+.generated-report-header {
+    border-bottom: 2px solid var(--navy);
+    margin-bottom: 16px;
+}
+
+.generated-report-header h2 {
+    margin: 0;
+}
+
+.finding-group {
+    margin-top: 16px;
+}
+
+/* ---------- Login ---------- */
+
+.login-container {
+    max-width: 420px;
+    margin: 48px auto 0;
+}
+
+.login-container h2 {
+    margin-top: 0;
+}
+
+.login-container::before {
+    content: "";
+    display: block;
+    height: 150px;
     margin-bottom: 20px;
+    background: url("../img/argus-logo.png") center / contain no-repeat;
 }
 
-#scanStatus {
-    font-weight: bold;
-    color: #2563eb;
+#login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
-@media (max-width: 1000px) {
+#login-form button {
+    margin-top: 10px;
+    padding: 10px;
+}
+
+#login-message {
+    color: var(--danger);
+    min-height: 1.5em;
+}
+
+/* ---------- Small screens ---------- */
+
+@media (max-width: 800px) {
     .dashboard-stats {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
-
-    .dashboard-stats .stat-card {
-        grid-column: span 2;
-    }
-
-    .dashboard-stats .stat-card:last-child {
-        grid-column: 2 / span 2;
+        grid-template-columns: minmax(0, 1fr);
     }
 }
 
 @media (max-width: 600px) {
     main {
-        padding: 20px;
+        padding: 20px 16px;
     }
 
-    .dashboard-stats {
-        grid-template-columns: minmax(0, 1fr);
+    body > header,
+    nav {
+        padding-left: 16px;
+        padding-right: 16px;
     }
 
-    .dashboard-stats .stat-card,
-    .dashboard-stats .stat-card:last-child {
-        grid-column: 1;
+    nav {
+        gap: 16px;
+    }
+
+    nav a[onclick] {
+        margin-left: 0;
     }
 
     .stat-card p {
         font-size: 26px;
     }
-
-    nav {
-        gap: 15px;
-    }
 }
+
+/* ---------- Printing a report (used by reports.js) ---------- */
 
 @media print {
 
@@ -157,7 +462,8 @@ main {
         visibility: hidden !important;
     }
 
-    body.printing-report #generatedReport, body.printing-report #generatedReport * {
+    body.printing-report #generatedReport,
+    body.printing-report #generatedReport * {
         visibility: visible !important;
     }
 
@@ -168,8 +474,52 @@ main {
         width: 100%;
         margin: 0 !important;
         padding: 0 !important;
+        border: none !important;
         background: white !important;
         color: black !important;
     }
 }
 
+/* ---------- Findings ---------- */
+
+.app-name {
+    font-family: "SFMono-Regular", Consolas, "Courier New", monospace;
+    font-size: 14px;
+    overflow-wrap: anywhere;
+}
+
+.badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #ffffff;
+    white-space: nowrap;
+}
+
+.badge.known { background-color: #dc2626; }
+.badge.high { background-color: #ea580c; }
+.badge.suspicious { background-color: #b45309; }
+.badge.other { background-color: #64748b; }
+
+.risk-score {
+    margin-left: 8px;
+    font-weight: 700;
+}
+
+.reason {
+    display: inline-block;
+    background-color: #f1f5f9;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 2px 8px;
+    margin: 2px 6px 2px 0;
+    font-size: 13px;
+}
+
+/* headings inside cards stay small, so each page has one big title */
+section h2 {
+    font-size: 17px;
+    margin: 0 0 12px;
+}

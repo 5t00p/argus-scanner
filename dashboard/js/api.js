@@ -16,7 +16,14 @@ async function apiRequest(endpoint, options = {}) {
     }
 
     if (!response.ok) {
-        throw new Error("Server error: " + response.status);
+        // keep the status code in the message (pages check for "409") and add the server's reason
+        let reason = "";
+        try {
+            reason = (await response.json()).error ?? "";
+        } catch (error) {
+            // no JSON body
+        }
+        throw new Error("Server error: " + response.status + (reason ? " - " + reason : ""));
     }
 
     if (response.status === 204) {
@@ -35,4 +42,15 @@ async function logout() {
     sessionStorage.removeItem("argusToken");
     sessionStorage.removeItem("argusUser");
     window.location.href = "login.html";
+}
+
+/** "2026-11-18T19:23:45" -> "Nov 18, 2026, 7:23 PM" */
+function formatDate(value) {
+    if (!value) {
+        return "N/A";
+    }
+    const date = new Date(value);
+    return isNaN(date) ? value : date.toLocaleString(undefined, {
+        month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit"
+    });
 }

@@ -6,7 +6,9 @@
 </head>
 <body>
 
-    <h1>Argus - Stalkerware Detector Dashboard</h1>
+    <header>
+        <h1>Argus</h1>
+    </header>
 
     <nav>
         <a href="index.html">Dashboard</a>
@@ -15,13 +17,12 @@
         <a href="scans.html">Scans</a>
         <a href="reports.html">Reports</a>
         <a href="signatures.html">Signatures</a>
+        <a href="#" onclick="logout(); return false;">Log out</a>
     </nav>
+
     <main>
-        <h2> Security Overview</h2>
-        <p>
-            Argus Dashboard.
-            View your device security status and recent scan activity below.
-        </p>
+        <h2>Overview</h2>
+        <p>Scan results across all cases. Open a scan to see which apps were flagged and why.</p>
 
         <section class="dashboard-stats">
             <div class="stat-card">
@@ -41,15 +42,18 @@
         </section>
 
         <section class="scan-actions">
-            <h2>Device Scanning</h2>
-            <p>
-                Scan your device for potentially suspicious applications and threats.
-            </p>
-
-            <a href="scans.html">Go to Scans</a>
+            <h3>Scanning a Survivor's Phone</h3>
+            <ol>
+                <li>Open a case on the <a href="cases.html">Cases</a> page and add the phone on the <a href="devices.html">Devices</a> page.</li>
+                <li>Click <strong>Pair scanner</strong> next to the phone to get a one-time code.</li>
+                <li>On the phone, enter the code in the Argus scanner app and tap <strong>Scan device</strong>.</li>
+                <li>The scan appears on the <a href="scans.html">Scans</a> page within seconds. Results are never sent back to the phone.</li>
+            </ol>
+            <a class="button" href="devices.html">Go to Devices</a>
         </section>
-        </main>
-            <script src="js/api.js" defer></script>
-            <script src="js/dashboard.js" defer></script>
-    </body>
-    </html>
+    </main>
+
+    <script src="js/api.js" defer></script>
+    <script src="js/dashboard.js" defer></script>
+</body>
+</html>
