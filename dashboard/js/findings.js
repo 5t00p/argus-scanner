@@ -44,7 +44,7 @@ async function loadFindings(scanId) {
             badge.style.color = "#ffffff";
 
             if (lowerClass.includes("known stalkerware") || lowerClass.includes("known_stalkerware") || lowerClass.includes("fakestalker")) {
-                badge.style.backgroundColor = "#ef4444"; // Red (Meets FakeStalker acceptance criteria)
+                badge.style.backgroundColor = "#ef4444"; // Red
                 badge.textContent = "Known stalkerware";
             } else if (lowerClass.includes("high risk") || lowerClass.includes("high_risk")) {
                 badge.style.backgroundColor = "#f97316"; // Orange
