@@ -8,11 +8,11 @@ and a web dashboard, backed by a MySQL database.
 
 ## Folder Structure
 
-server/ – Backend server (Java, Spring Boot)
-scanner-android/ – Android scanner app (Kotlin)
-dashboard/ – Web dashboard (HTML, CSS, JavaScript)
-db/ – Database scripts (MySQL)
-docs/ – Test Scans (JSON Files)
+- server/ – Backend server (Java, Spring Boot)
+- scanner-android/ – Android scanner app (Kotlin)
+- dashboard/ – Web dashboard (HTML, CSS, JavaScript)
+- db/ – Database scripts (MySQL)
+- docs/ – Test Scans (JSON Files)
 
 
 ## How to Run
@@ -21,7 +21,7 @@ docs/ – Test Scans (JSON Files)
 1. Install MySQL Configurator/Server at https://dev.mysql.com/downloads/mysql
 2. Install MySQL Workbench at https://dev.mysql.com/downloads/workbench or any MySQL client
 3. Install Java JDK at https://www.oracle.com/java/technologies/downloads/#jdk27-windows
-4. Install Android Studio
+4. Install Android Studio at https://developer.android.com/studio
 
 
  MySQL Configurator Section:
