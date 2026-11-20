@@ -1,246 +1,140 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const scanSelect = document.getElementById("reportScanSelect");
-    const viewButton = document.getElementById("generateReport");
-    const printButton = document.getElementById("printReport");
-    const status = document.getElementById("reportStatus");
-    const report = document.getElementById("generatedReport");
-    let completedScans = [];
+const scanSelect = document.getElementById("reportScanSelect");
+const viewButton = document.getElementById("generateReport");
+const printButton = document.getElementById("printReport");
+const reportStatus = document.getElementById("reportStatus");
+const report = document.getElementById("generatedReport");
 
+const knownList = document.getElementById("knownStalkerwareList");
+const highList = document.getElementById("highRiskList");
+const suspiciousList = document.getElementById("suspiciousList");
+
+let completedScans = [];
+
+if (scanSelect) {
     loadCompletedScans();
+}
 
-    async function loadCompletedScans() {
-        status.textContent = "Loading completed scans...";
-        scanSelect.disabled = true;
-        viewButton.disabled = true;
-        printButton.disabled = true;
+async function loadCompletedScans() {
+    try {
+        const scans = await apiRequest("/api/scans");
+        completedScans = scans.filter(function(scan) {
+            return scan.scan_status === "analyzed";
+        });
 
-        try {
-            const scans = await apiRequest("/api/scans");
-            if (!Array.isArray(scans)) {
-                throw new Error("Invalid scan response");
-            }
+        scanSelect.innerHTML = '<option value="">Select a scan</option>';
+        completedScans.forEach(function(scan) {
+            const option = document.createElement("option");
+            option.value = scan.scanID;
+            option.textContent = "Scan #" + scan.scanID + " - Device #" + scan.deviceID + " - " + formatDate(scan.started_at);
+            scanSelect.appendChild(option);
+        });
 
-            completedScans = scans.filter(scan => String(scan.scan_status ?? scan.status).toLowerCase() === "analyzed"
-            );
-
-            scanSelect.replaceChildren();
-            const placeholder = document.createElement("option");
-            placeholder.value = "";
-            placeholder.textContent = "-- Select a Scan --";
-            scanSelect.appendChild(placeholder);
-
-            completedScans.forEach(scan => {
-
-                const option = document.createElement("option");
-                option.value = scan.scanID;
-                const date = formatDate(scan.started_at);
-
-                option.textContent = `Scan #${scan.scanID} - Device #${scan.deviceID} - ${date}`;
-
-                scanSelect.appendChild(option);
-            });
-
-            if (completedScans.length === 0) {
-                status.textContent = "No completed scans are available.";
-                return;
-            }
-
-            scanSelect.disabled = false;
-            status.textContent = `${completedScans.length} completed scan(s) available.`;
-
-            const params = new URLSearchParams(window.location.search);
-            const requestedId = params.get("scanId");
-
-            if (requestedId && completedScans.some(s => String(s.scanID) === requestedId)) {
-                scanSelect.value = requestedId;
-                viewButton.disabled = false;
-                await generateReport();
-            }
-
-        } catch (error) {
-
-            console.error(error);
-
-            status.textContent = "Unable to load scans: " + error.message;
-        }
-    }
-
-
-
-
-    scanSelect.addEventListener("change", function () {
-        report.hidden = true;
-        printButton.disabled = true;
-
-        viewButton.disabled = !scanSelect.value;
-
-        status.textContent = scanSelect.value ? "Click View Report to display the selected scan." : "Select a completed scan.";
-    });
-
-    viewButton.addEventListener("click", generateReport);
-
-    printButton.addEventListener("click", function () {
-
-        if (!report.hidden) {
-            document.body.classList.add("printing-report");
-            window.print();
-        }
-    });
-
-    window.addEventListener("afterprint", function () {
-        document.body.classList.remove("printing-report");
-    });
-
-
-    async function generateReport() {
-
-        const selectedScan = completedScans.find(scan => String(scan.scanID) === scanSelect.value
-        );
-
-        if (!selectedScan) {
-            status.textContent = "Please select a scan.";
+        if (completedScans.length === 0) {
+            reportStatus.textContent = "No completed scans yet.";
             return;
         }
+        scanSelect.disabled = false;
+        reportStatus.textContent = "Select a scan to view its report.";
 
-        viewButton.disabled = true;
-        printButton.disabled = true;
-        report.hidden = true;
-        status.textContent = "Generating security report...";
-
-        try {
-
-            const [device, findings] = await Promise.all([
-                apiRequest("/api/devices/" + selectedScan.deviceID
-                ),
-                apiRequest("/api/scans/" + selectedScan.scanID + "/findings"
-                )
-            ]);
-
-            if (!device || !Array.isArray(findings)) {
-                throw new Error("Invalid device or findings response");
-            }
-
-            document.getElementById("reportScanId").textContent = selectedScan.scanID;
-            document.getElementById("reportDate").textContent = formatDate(selectedScan.started_at);
-            document.getElementById("reportScanStatus").textContent = selectedScan.scan_status ?? "Unknown";
-            document.getElementById("reportDeviceId").textContent = device.deviceID ?? "Unknown";
-            document.getElementById("reportDeviceModel").textContent = device.model || "Unknown model";
-            document.getElementById("reportPlatform").textContent = device.platform || "Unknown platform";
-
-
-            const summaryList = document.getElementById("reportFindingSummary");
-
-
-            document.getElementById("reportFindingSummary").textContent = findings.length === 0 ? "No suspicious activities detected." : findings.map(finding => finding.package_name || "Unknown application").join(", ");
-
-            const highestScore = Math.max(
-                0, ...findings.map(finding => Number(finding.risk_score) || 0)
-            );
-
-            const hasHighRiskFinding = findings.some(finding => {
-
-                const classification = String(finding.classification || "").trim().toLowerCase();
-
-                return classification === "known stalkerware" || classification === "high risk";
-            });
-
-            let riskLevel;
-
-            if (hasHighRiskFinding || highestScore >= 75) {
-
-                riskLevel = "High";
-
-            } else if (findings.length > 0) {
-
-                riskLevel = "Medium";
-
-            } else {
-
-                riskLevel = "Low";
-            }
-
-            document.getElementById("reportRiskLevel").textContent = riskLevel;
-
-
-            const knownList = document.getElementById("knownStalkerwareList");
-
-            const highList = document.getElementById("highRiskList");
-
-            const suspiciousList = document.getElementById("suspiciousList");
-
-            knownList.replaceChildren();
-            highList.replaceChildren();
-            suspiciousList.replaceChildren();
-
-            findings.forEach(finding => {
-
-                const classification = String(finding.classification || "").trim().toLowerCase();
-                let targetList;
-
-                if (classification === "known stalkerware") {
-                    targetList = knownList;
-                } else if (classification === "high risk") {
-                    targetList = highList;
-                } else {
-                    targetList = suspiciousList;
-                }
-
-                const item = document.createElement("li");
-                const heading = document.createElement("strong");
-                heading.textContent = finding.package_name || "Unknown application";
-                item.appendChild(heading);
-
-                const score = document.createElement("span");
-                score.textContent =" - Risk Score: " + (finding.risk_score ?? "N/A");
-
-                item.appendChild(score);
-
-                if (finding.reason) {
-                    const reason = document.createElement("p");
-                    reason.textContent = finding.reason;
-                    item.appendChild(reason);
-                }
-
-                targetList.appendChild(item);
-            });
-
-            [knownList, highList, suspiciousList].forEach(list => {
-
-                if (list.children.length === 0) {
-                    const item = document.createElement("li");
-                    item.textContent = "No findings.";
-                    list.appendChild(item);
-                }
-            });
-
-            report.hidden = false;
-            printButton.disabled = false;
-
-            status.textContent = `Report generated for Scan #${selectedScan.scanID}. ` + `${findings.length} finding(s) retrieved.`;
-
-        } catch (error) {
-
-            console.error("Report generation failed:", error);
-            status.textContent = "Unable to generate report: " + error.message;
-
-        } finally {
-            viewButton.disabled = !scanSelect.value;
+        // the scans page sends you here with ?scanId= after an upload
+        const scanId = new URLSearchParams(window.location.search).get("scanId");
+        if (scanId && completedScans.some(scan => String(scan.scanID) === scanId)) {
+            scanSelect.value = scanId;
+            showReport();
         }
+    } catch (error) {
+        console.error("Failed to load scans:", error);
+        reportStatus.textContent = "Could not load scans.";
     }
+}
 
-    function formatDate(value) {
-
-        if (!value) {
-            return "Unknown date";
-        }
-
-        const date = new Date(value);
-
-        if (Number.isNaN(date.getTime())) {
-            return value;
-        }
-        
-        return date.toLocaleString();
-    }
-
+scanSelect.addEventListener("change", function() {
+    report.hidden = true;
+    printButton.disabled = true;
+    viewButton.disabled = !scanSelect.value;
 });
+
+viewButton.addEventListener("click", showReport);
+
+printButton.addEventListener("click", function() {
+    document.body.classList.add("printing-report");
+    window.print();
+});
+
+window.addEventListener("afterprint", function() {
+    document.body.classList.remove("printing-report");
+});
+
+async function showReport() {
+    const scan = completedScans.find(s => String(s.scanID) === scanSelect.value);
+    if (!scan) {
+        return;
+    }
+
+    viewButton.disabled = true;
+    reportStatus.textContent = "Loading report...";
+
+    try {
+        const [device, findings] = await Promise.all([
+            apiRequest("/api/devices/" + scan.deviceID),
+            apiRequest("/api/scans/" + scan.scanID + "/findings")
+        ]);
+
+        document.getElementById("reportScanId").textContent = scan.scanID;
+        document.getElementById("reportDate").textContent = formatDate(scan.started_at);
+        document.getElementById("reportScanStatus").textContent = scan.scan_status;
+        document.getElementById("reportDeviceId").textContent = device.deviceID;
+        document.getElementById("reportDeviceModel").textContent = device.model || "Unknown model";
+        document.getElementById("reportPlatform").textContent = device.platform === "ios" ? "iOS" : "Android";
+        document.getElementById("reportFindingSummary").textContent = findings.length === 0
+            ? "No flagged apps."
+            : findings.length + " flagged app(s): " + findings.map(f => f.package_name).join(", ");
+        document.getElementById("reportRiskLevel").textContent = riskLevel(findings);
+
+        fillList(knownList, findings.filter(f => f.classification === "Known stalkerware"));
+        fillList(highList, findings.filter(f => f.classification === "High risk"));
+        fillList(suspiciousList, findings.filter(f => f.classification === "Suspicious"));
+
+        report.hidden = false;
+        printButton.disabled = false;
+        reportStatus.textContent = "";
+    } catch (error) {
+        console.error("Failed to load report:", error);
+        reportStatus.textContent = "Could not load the report.";
+    } finally {
+        viewButton.disabled = false;
+    }
+}
+
+// the server already labels each finding, so the overall level just follows the worst label
+function riskLevel(findings) {
+    if (findings.some(f => f.classification === "Known stalkerware" || f.classification === "High risk")) {
+        return "High";
+    }
+    return findings.length > 0 ? "Medium" : "Low";
+}
+
+function fillList(list, findings) {
+    list.innerHTML = "";
+
+    if (findings.length === 0) {
+        list.innerHTML = "<li>None.</li>";
+        return;
+    }
+
+    findings.forEach(function(finding) {
+        const item = document.createElement("li");
+
+        const name = document.createElement("strong");
+        name.textContent = finding.package_name;
+
+        const score = document.createElement("span");
+        score.textContent = " - risk " + finding.risk_score + "%";
+
+        const reason = document.createElement("p");
+        reason.textContent = finding.reason;
+
+        item.append(name, score, reason);
+        list.appendChild(item);
+    });
+}

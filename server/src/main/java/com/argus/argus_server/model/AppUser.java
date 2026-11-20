@@ -37,7 +37,7 @@ public class AppUser {
         return PasswordHasher.matches(password, passwordHash);
     }
 
-    /** Stores a salted hash of the password, never the password itself. */
+    /** Stores a salted hash of the password */
     public void setPassword(String password) {
         this.passwordHash = PasswordHasher.hash(password);
     }

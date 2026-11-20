@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-/** One app from the scanner's scan.json. Boolean wrappers because a missing field must not break parsing. */
+/** One app from scan.json. Using Boolean instead of boolean so a missing field doesn't break parsing. */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record ScannedApp(
         @JsonProperty("package_name") String packageName,

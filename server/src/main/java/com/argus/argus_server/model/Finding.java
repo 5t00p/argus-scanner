@@ -44,7 +44,7 @@ public class Finding {
         return finding;
     }
 
-    /** Label for the dashboard: a signature match is certain, otherwise it depends on the score. */
+    /** Label shown on the dashboard. Signature match means known stalkerware, otherwise it's based on the score. */
     public String getClassification() {
         if (signaturesID != null) {
             return "Known stalkerware";

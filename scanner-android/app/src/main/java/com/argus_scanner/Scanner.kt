@@ -25,7 +25,7 @@ fun scanDevice(context: Context): JSONObject {
     val flags = PackageManager.GET_PERMISSIONS or PackageManager.GET_SIGNING_CERTIFICATES
     for (pi in pm.getInstalledPackages(flags)) {
         val ai = pi.applicationInfo ?: continue
-        // shortcut: skips preinstalled system apps, include them if stalkerware is found posing as a system app
+        // skips preinstalled system apps, include them if stalkerware is found posing as a system app
         if (ai.flags and ApplicationInfo.FLAG_SYSTEM != 0) continue
         apps.put(
             JSONObject()

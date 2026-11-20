@@ -1,6 +1,6 @@
 package com.argus.argus_server.analysis;
 
-/** One warning sign found by a RiskCheck. signatureId is set only by a known-stalkerware match. */
+/** One warning sign from a RiskCheck. signatureId is only set if it matched known stalkerware. */
 public record RiskFactor(int points, String reason, Integer signatureId) {
 
     public RiskFactor(int points, String reason) {

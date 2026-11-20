@@ -2,7 +2,6 @@
 
 /* Colors in one place, so the whole site can be re-themed here */
 :root {
-    /* palette taken from the team logo: peacock blue, emerald feathers, gold eye */
     --navy: #0a1f44;
     --navy-soft: #163a6b;
     --accent: #0b7a62;
@@ -15,7 +14,7 @@
     --border: #e2e8f0;
     --page: #f7f5ef;
     --card: #ffffff;
-    --gold: #d4a640; /* from the logo */
+    --gold: #d4a640;
 }
 
 * {
@@ -23,7 +22,6 @@
 }
 
 body {
-    /* Atkinson Hyperlegible: designed by the Braille Institute for readability */
     font-family: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
     background-color: var(--page);
     color: var(--text);
@@ -49,7 +47,7 @@ body > header h1 {
     font-size: 0;
 }
 
-/* the login page shows the big logo in its card instead of the header bar */
+/* the login page shows the big logo in its card */
 body > header:not(:has(+ nav)) {
     display: none;
 }
@@ -458,7 +456,7 @@ select {
     }
 }
 
-/* ---------- Printing a report (used by reports.js) ---------- */
+/* ---------- Printing a report this is used by reports.js ---------- */
 
 @media print {
 
@@ -522,12 +520,11 @@ select {
     font-size: 13px;
 }
 
-/* headings inside cards stay small, so each page has one big title */
 section h2 {
     font-size: 17px;
     margin: 0 0 12px;
 }
-/* ---------- Sidebar layout: nav on the left, content sits on the page (no boxes) ---------- */
+/* ---------- Sidebar layout: nav on the left, content sits on the page ---------- */
 body:has(> nav) {
     display: grid;
     grid-template-columns: 230px minmax(0, 1fr);
@@ -585,7 +582,7 @@ tbody tr:hover { background-color: rgba(11,122,98,0.05); }
 .pairing-box { background: rgba(213,167,70,0.1); border: none; border-left: 4px solid var(--gold); border-radius: 0; padding: 24px; margin: 24px 0; }
 input, select { background: #fffdf8; }
 
-/* login page: dark feather photo behind the sign-in card */
+/* login page: dark feather photo behind the sign-in card */ 
 body:not(:has(> nav)) {
     background:
         linear-gradient(rgba(10, 31, 68, 0.55), rgba(7, 60, 70, 0.6)),

@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-/** On an empty database, creates the first admin so someone can log in and add the other users. */
+/** If the database is empty, makes a first admin account so someone can log in. */
 @Component
 public class AdminSeeder implements CommandLineRunner {
 

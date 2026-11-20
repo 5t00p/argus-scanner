@@ -26,7 +26,7 @@ public class Device {
 
     }
 
-    /** Checks the fields before saving: Android or iOS only, and a model name that fits the column. */
+    /** Checks fields before saving (platform has to be android or ios, model has to fit the column). */
     public void validate() {
         if (platform == null || !(platform.equalsIgnoreCase("android") || platform.equalsIgnoreCase("ios"))) {
             throw new IllegalArgumentException("Platform must be \"android\" or \"ios\"");

@@ -35,13 +35,13 @@ public class ScanService {
         this.cases = cases;
     }
 
-    /** Saves the scan plus a Finding for every flagged app. All or nothing: any error rolls back the whole scan. */
+    /** Saves the scan and a Finding for each flagged app. If anything fails the whole scan gets rolled back. */
     @Transactional
     public Result saveScan(int deviceId, ScanUpload upload) {
         Device device = devices.findById(deviceId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "device " + deviceId + " not found"));
 
-        // deadlock rule: lock the case first, so every writer takes locks in the same order
+        // deadlock rule: always lock the case first so everything locks in the same order
         if (device.getCaseID() != null) {
             cases.lockById(device.getCaseID());
         }

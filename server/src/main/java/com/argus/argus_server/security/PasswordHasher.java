@@ -7,7 +7,7 @@ import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.util.Base64;
 
-/** Salted PBKDF2 password hashes, stored as "pbkdf2$iterations$salt$hash". Built into Java, no extra library. */
+/** Salted PBKDF2 hashes saved as "pbkdf2$iterations$salt$hash". Uses Java's built in crypto so we don't need another library. */
 public final class PasswordHasher {
 
     private static final int ITERATIONS = 210_000;
@@ -32,7 +32,7 @@ public final class PasswordHasher {
         }
         byte[] salt = Base64.getDecoder().decode(parts[2]);
         byte[] expected = Base64.getDecoder().decode(parts[3]);
-        // constant-time compare so response timing doesn't leak how close a guess was
+        // constant-time compare so timing doesn't give away how much of the hash matched
         return MessageDigest.isEqual(expected, derive(password, salt, Integer.parseInt(parts[1])));
     }
 

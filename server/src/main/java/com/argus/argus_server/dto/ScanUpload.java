@@ -5,13 +5,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-/** The scan.json body a scanner (or the dashboard upload) sends to the server. */
+/** The scan.json that the scanner app (or the dashboard upload) sends. */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record ScanUpload(
         @JsonProperty("scan_uuid") String scanUuid,
         @JsonProperty("apps") List<ScannedApp> apps) {
 
-    /** The scan comes from a phone that may be compromised, so check its shape before trusting it. */
+    /** Check the scan before using it since it comes from a phone that might be compromised. */
     public boolean isValid() {
         return scanUuid != null && scanUuid.length() == 36 && apps != null
                 && apps.stream().allMatch(app -> app != null && app.packageName() != null);

@@ -9,7 +9,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 import java.util.Map;
 
-/** Turns bad input into a clear 400 for every endpoint, instead of a 500 error. */
+/** Turns bad input into a clear 400 for every endpoint */
 @RestControllerAdvice
 public class ApiExceptionHandler {
 

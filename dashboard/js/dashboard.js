@@ -24,7 +24,6 @@ async function loadDashboard() {
         );
         const findings = findingsByScan.flat();
 
-        // same labels the findings page shows, so the numbers always agree
         threatsElement.textContent = findings.length;
         highRiskElement.textContent = findings.filter(finding =>
             finding.classification === "Known stalkerware" || finding.classification === "High risk"

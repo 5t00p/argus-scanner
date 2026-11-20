@@ -56,7 +56,6 @@ async function loadScanHistory() {
         scans.forEach(function(scan) {
             const row = document.createElement("tr");
 
-            // textContent, not innerHTML: device models come from the phone and could contain HTML
             [scan.scanID, formatDate(scan.started_at), deviceLabel(scan.deviceID), scan.scan_status ?? "N/A"]
                 .forEach(function(value) {
                     const cell = document.createElement("td");

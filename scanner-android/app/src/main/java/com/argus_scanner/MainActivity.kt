@@ -64,7 +64,6 @@ class MainActivity : AppCompatActivity() {
             button.isEnabled = false
             output.text = "Scanning..."
 
-            // network calls are not allowed on the UI thread, so scan and upload in the background
             thread {
                 val scan = scanDevice(this)
                 val file = File(getExternalFilesDir(null), "scan.json")

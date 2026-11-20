@@ -4,7 +4,7 @@ import com.argus.argus_server.dto.ScannedApp;
 
 import java.util.List;
 
-/** One kind of warning sign. Add a new check by writing a new class; the analyzer never changes. */
+/** One type of warning sign. To add a check just make a new class, RiskAnalyzer picks it up automatically. */
 @FunctionalInterface
 public interface RiskCheck {
     List<RiskFactor> evaluate(ScannedApp app);

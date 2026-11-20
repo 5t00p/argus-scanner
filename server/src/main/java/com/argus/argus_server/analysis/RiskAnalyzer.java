@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Objects;
 
-/** Runs every RiskCheck on an app and adds up the result. Spring passes in all RiskCheck classes. */
+/** Runs every RiskCheck on an app and adds up the result. */
 @Component
 public class RiskAnalyzer {
 

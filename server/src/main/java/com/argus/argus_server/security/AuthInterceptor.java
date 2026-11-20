@@ -8,12 +8,12 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import java.io.IOException;
 
-/** Runs before every /api request: no valid session token, no data. */
+/** Checks every /api request for a valid session token. */
 @Component
 public class AuthInterceptor implements HandlerInterceptor {
 
     public static final String SESSION_ATTRIBUTE = "argusSession";
-    // a real scan of ~300 apps is well under 1 MB, so anything over 5 MB is not a scan
+   // a real scan (~150 apps on my phone) is way under 1 MB so anything over 5 MB gets rejected
     private static final long MAX_BODY_BYTES = 5L * 1024 * 1024;
 
     private final SessionStore sessions;

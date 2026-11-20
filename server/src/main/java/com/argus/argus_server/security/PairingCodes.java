@@ -11,9 +11,9 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * One-time 6-digit codes that link the scanner app to a device. Used instead of a login on the
- * survivor's phone, because stalkerware there could capture an advocate's password.
- * Kept in memory: codes only live 10 minutes, so a server restart just means making a new one.
+ * One-time 6-digit codes that link the scanner app to a device. We use these instead of logging in
+ * on the survivor's phone since stalkerware on it could grab the advocate's password.
+ * Stored in memory. Codes expire after 10 minutes anyway so a restart just means making a new one.
  */
 @Component
 public class PairingCodes {

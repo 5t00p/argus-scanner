@@ -5,7 +5,7 @@ import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
 
-/** Sends the scan using a one-time pairing code from the dashboard and returns the new scan ID. Call off the UI thread. */
+/** Sends the scan using a one-time pairing code from the dashboard and returns the new scan ID. */
 fun uploadScan(serverUrl: String, pairingCode: String, scan: JSONObject): Int {
     val connection = URL("${serverUrl.trimEnd('/')}/api/pairing/$pairingCode/scans").openConnection() as HttpURLConnection
     try {

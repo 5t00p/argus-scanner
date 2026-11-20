@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-/** Logged-in sessions. Kept in memory: they are temporary, and a server restart just means logging in again. */
+/** Logged-in sessions, stored in memory. If the server restarts everyone just logs in again. */
 @Component
 public class SessionStore {
 

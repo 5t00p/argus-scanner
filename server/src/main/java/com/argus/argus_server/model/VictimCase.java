@@ -23,7 +23,7 @@ public class VictimCase {
     public VictimCase() {
     }
 
-    /** Class diagram Case.updateStatus(): a case is only ever "open" or "closed". */
+    /** updateStatus() from the class diagram. Status can only be "open" or "closed". */
     public void updateStatus(String newStatus) {
         if (!"open".equals(newStatus) && !"closed".equals(newStatus)) {
             throw new IllegalArgumentException("Status must be \"open\" or \"closed\"");
