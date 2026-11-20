@@ -8,11 +8,11 @@ and a web dashboard, backed by a MySQL database.
 
 ## Folder Structure
 
- `server/` – Backend server (Java, Spring Boot)
- `scanner-android/` – Android scanner app (Kotlin)
- `dashboard/` – Web dashboard (HTML, CSS, JavaScript)
- `db/` – Database scripts (MySQL)
- `docs/` – Test Scans (JSON Files)
+ server/ – Backend server (Java, Spring Boot)
+ scanner-android/ – Android scanner app (Kotlin)
+ dashboard/ – Web dashboard (HTML, CSS, JavaScript)
+ db/ – Database scripts (MySQL)
+ docs/ – Test Scans (JSON Files)
 
 
 ## How to Run
